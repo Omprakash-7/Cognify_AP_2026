@@ -17,7 +17,7 @@
 7. [Third Normal Form (3NF) Transformation](#7-third-normal-form-3nf-transformation)
 8. [Boyce-Codd Normal Form (BCNF) Analysis & Proofs](#8-boyce-codd-normal-form-bcnf-analysis--proofs)
 9. [Final Normalized Relational Schema Specification](#9-final-normalized-relational-schema-specification)
-10. [Derived, Redundant, and Computed Attributes: Viva Defense & Architectural Trade-offs](#10-derived-redundant-and-computed-attributes-viva-defense--architectural-trade-offs)
+10. [Derived and Redundant Attributes: Architectural Trade-Off Analysis](#10-derived-and-redundant-attributes-architectural-trade-off-analysis)
 11. [Summary & Checkpoint 1 Sign-Off](#11-summary--checkpoint-1-sign-off)
 
 ---
@@ -653,15 +653,15 @@ CREATE INDEX idx_audit_logs_user_id ON audit_logs(user_id);
 
 ---
 
-## 10. Derived, Redundant, and Computed Attributes: Viva Defense & Architectural Trade-offs
+## 10. Derived and Redundant Attributes: Architectural Trade-Off Analysis
 
 A core criterion in relational database evaluation is how an engineering team handles **derived and redundant data**. Storing computed values violates strict purist relational normalization (introducing redundancy and potential synchronization anomalies), whereas dynamically recomputing aggregations across millions of rows causes severe OLTP throughput degradation.
 
-Below is Cognify's formal trade-off matrix and architectural justifications, structured specifically for **viva defense**.
+Below is Cognify's formal trade-off matrix and architectural justifications balancing strict relational normalization with real-world query latency.
 
 ### 10.1 Trade-Off Evaluation Matrix
 
-| Derived Candidate Attribute | Candidate Location | Derivation Formula | Design Decision | Viva Defense & Engineering Rationale |
+| Derived Candidate Attribute | Candidate Location | Derivation Formula | Design Decision | Engineering Rationale & Trade-Offs |
 | :--- | :--- | :--- | :--- | :--- |
 | **`total_cards_count`** | `decks` | `SELECT COUNT(*) FROM cards WHERE deck_id = D.deck_id` | **DERIVE DYNAMICALLY** (Query / Materialized View) | **Write Amplification vs Read Cost:** Flashcard decks change frequently during creation sessions. Storing a counter causes write lock contention on the parent `decks` row on every card creation/deletion. `COUNT(*)` via an index-only scan on `cards.deck_id` runs in sub-millisecond time. |
 | **`session_duration_seconds`** | `study_sessions` | `EXTRACT(EPOCH FROM (session_end - session_start))` | **DERIVE DYNAMICALLY** (SQL Query / Database VIEW) | **Zero Redundancy & Immutability Guarantee:** Storing both timestamps and duration creates an update anomaly if `session_end` is corrected. Furthermore, in PostgreSQL, subtracting two `TIMESTAMPTZ` values and evaluating `EXTRACT(EPOCH FROM ...)` is classified by the engine as `STABLE` rather than `IMMUTABLE` due to timezone-dependent offset conversions, which syntactically prevents using it in a `STORED` generated column (`ERROR: generation expression is not immutable`). Thus, `session_duration_seconds` is dynamically derived in analytical queries or a lightweight database `VIEW` (`EXTRACT(EPOCH FROM (session_end - session_start))`), introducing zero storage footprint and guaranteeing 100% mathematical consistency without timezone clock-drift hazards. |
@@ -671,19 +671,16 @@ Below is Cognify's formal trade-off matrix and architectural justifications, str
 | **`total_xp` / `user_level`** | `user_profiles` | `SELECT COALESCE(SUM(a.xp_value), 0) FROM achievements a JOIN user_achievements ua ON a.achievement_id = ua.achievement_id WHERE ua.user_id = U.user_id` | **DERIVE DYNAMICALLY WITH APPLICATION-TIER CACHE (Redis)** | **Anti-Corruption Strategy:** Storing `total_xp` in `users` invites drift if an achievement is revoked or recalculated. The database maintains transactional truth through `user_achievements`; the application tier caches the aggregated XP in Redis with a TTL of 300 seconds. |
 | **`current_streak_days`** | `user_profiles` | Chronological gap analysis between consecutive daily session dates in `study_sessions` | **DERIVE DYNAMICALLY VIA SCHEDULED AGGREGATION** | **Temporal Boundary Conditions:** Streaks depend on user time zones and midnight cutoffs. Computing this on every page load is expensive; storing it directly in OLTP invites synchronization flaws. Calculated once daily via background workers (e.g. pg_cron or Celery) and cached. |
 
-### 10.2 Viva Defense Q&A Preparation Guide
+### 10.2 Architectural Justifications for Key Design Decisions
 
-#### Question 1: *"Why did your team not store `total_cards` in the `decks` table to make deck listing faster?"*
-> **Answer:**  
-> "Storing `total_cards` in the `decks` table would introduce a transitive dependency on the cardinality of child rows in the `cards` table, violating strict 3NF purity. More critically, from a high-concurrency systems perspective, every `INSERT` or `DELETE` on a card would require an `UPDATE decks SET total_cards = total_cards + 1 WHERE deck_id = ...`. This acquires an exclusive row-level lock on the parent deck, serializing card imports and causing lock contention. Because our `cards` table has an index on `deck_id` (`idx_cards_deck_id`), `COUNT(*)` executes as an index-only scan in memory. If deck listing at scale requires pre-calculated numbers, we utilize a PostgreSQL Materialized View refreshed asynchronously, isolating read performance from OLTP transactional paths."
+#### 10.2.1 Dynamic Calculation of Deck Aggregations (Lock Contention vs. Read Latency)
+Storing `total_cards` in the `decks` table would introduce a transitive dependency on the cardinality of child rows in the `cards` table, violating strict 3NF purity. More critically, from a high-concurrency systems perspective, every `INSERT` or `DELETE` on a card would require an `UPDATE decks SET total_cards = total_cards + 1 WHERE deck_id = ...`. This acquires an exclusive row-level lock on the parent deck, serializing card imports and causing lock contention. Because our `cards` table has an index on `deck_id` (`idx_cards_deck_id`), `COUNT(*)` executes as an index-only scan in memory. If deck listing at scale requires pre-calculated numbers, a PostgreSQL Materialized View refreshed asynchronously isolates read performance from OLTP transactional paths.
 
-#### Question 2: *"Why is `card_progress` separated from `review_logs`? Isn't progress just an aggregation of review logs?"*
-> **Answer:**  
-> "Conceptually, `card_progress` represents the **current state** (Markovian state) of a student's cognitive memory retention for a given card, while `review_logs` represents the **immutable historical ledger** of events. If we derived interval, ease factor, and repetition count dynamically from `review_logs`, determining whether a card is due for review would require evaluating a recursive window function over hundreds of historical reviews per card for thousands of cards on every queue fetch. That transforms an O(1) indexed point query into an O(N * M) full-table aggregation. By separating `card_progress` (which is in BCNF under the key `(user_id, card_id)`), we ensure constant-time scheduling retrieval while preserving an auditable event ledger in `review_logs`."
+#### 10.2.2 State Materialization in Spaced Repetition (Markovian State vs. Log Aggregation)
+Conceptually, `card_progress` represents the **current state** (Markovian state) of a student's cognitive memory retention for a given card, while `review_logs` represents the **immutable historical ledger** of events. If we derived interval, ease factor, and repetition count dynamically from `review_logs`, determining whether a card is due for review would require evaluating a recursive window function over hundreds of historical reviews per card for thousands of cards on every queue fetch. That transforms an O(1) indexed point query into an O(N * M) full-table aggregation. By separating `card_progress` (which is in BCNF under the key `(user_id, card_id)`), the system ensures constant-time scheduling retrieval while preserving an auditable event ledger in `review_logs`.
 
-#### Question 3: *"Does `user_credentials` being a separate 1:1 table with `users` violate normal form?"*
-> **Answer:**  
-> "No, both tables share the identical primary key (`user_id`) and both satisfy BCNF individually. This decomposition is an application of **vertical partitioning** driven by security and database engine optimization. High-frequency queries (e.g., loading user profile info, leaderboards, public decks) only access `users` or `user_profiles`, meaning sensitive password hashes and MFA secrets are never loaded into DBMS buffer memory unnecessarily, reducing the risk of accidental cache leaks, side-channel exposure, or buffer bloat."
+#### 10.2.3 Vertical Partitioning of Authentication Credentials (Buffer Hygiene & Security)
+The `users` and `user_credentials` relations share the identical primary key (`user_id`), and both satisfy BCNF individually. This decomposition is a deliberate application of **vertical partitioning** driven by security and database engine optimization. High-frequency queries (e.g., loading user profile info, leaderboards, public decks) only access `users` or `user_profiles`, meaning sensitive password hashes and MFA secrets are never loaded into DBMS buffer memory unnecessarily, reducing the risk of accidental cache leaks, side-channel exposure, or buffer bloat.
 
 ---
 
@@ -700,7 +697,7 @@ Below is Cognify's formal trade-off matrix and architectural justifications, str
 | **2NF Transformation** | Completed | Elimination of all partial key dependencies on composite keys with lossless join proofs. |
 | **3NF Transformation** | Completed | Removal of all transitive dependencies (e.g., topic details in decks, session data in reviews). |
 | **BCNF Proofs & Superkey Verification** | Completed | Exhaustive verification proving that for every non-trivial `X -> Y`, `X` is a superkey across all tables. |
-| **Derived & Redundant Attributes Viva Defense** | Completed | In-depth trade-off matrix balancing OLTP lock contention, read/write ratios, caching strategies, and sample viva answers. |
+| **Derived & Redundant Attributes Analysis** | Completed | In-depth trade-off matrix balancing OLTP lock contention, read/write ratios, caching strategies, and architectural justifications. |
 | **Deliverable Target Path** | Completed | Saved directly to `dbms/01_normalization.md`. |
 
 ---
