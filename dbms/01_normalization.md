@@ -43,7 +43,7 @@ The relational decomposition follows formal Codd relational database theory:
 flowchart LR
     UNF["UNF\n(Nested records, repeating groups)"] -->|"Atomic Domains\nNo Multi-Valued Attributes"| NF1["1NF\n(Scalar values, primary key assigned)"]
     NF1 -->|"Remove Partial Dependencies\n(Non-prime fully dep on CK)"| NF2["2NF\n(Separate sub-entities from composite keys)"]
-    NF2 -->|"Remove Transitive Dependencies\n(Non-prime cannot determine non-prime)"| NF3["3NF\n(X -> Y: X is Superkey OR Y is Prime)"| NF3
+    NF2 -->|"Remove Transitive Dependencies\n(Non-prime cannot determine non-prime)"| NF3["3NF\n(X -> Y: X is Superkey OR Y is Prime)"]
     NF3 -->|"Strict Superkey Determinancy\n(For all X -> Y, X must be Superkey)"| BCNF["BCNF\n(Anomaly-free relational design)"]
 ```
 
