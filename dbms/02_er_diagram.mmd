@@ -1,0 +1,169 @@
+erDiagram
+    %% ========================================================================
+    %% COGNIFY DATABASE ER DIAGRAM (CP2 DELIVERABLE)
+    %% Team T0004 · Section D · B.Tech 2nd Year
+    %% ========================================================================
+
+    USERS ||--|| USER_CREDENTIALS : "authenticates via"
+    USERS ||--|| USER_PROFILES : "configures"
+    USERS ||--|| COGNITIVE_BASELINES : "assessed with"
+    USERS ||--o{ USER_ROLES : "assigned"
+    ROLES ||--o{ USER_ROLES : "maps to"
+
+    USERS ||--o{ DECKS : "authors"
+    TOPICS ||--o{ DECKS : "categorizes"
+    DECKS ||--o{ CARDS : "contains"
+    CARDS ||--o{ CARD_MEDIA : "attaches"
+
+    USERS ||--o{ CARD_PROGRESS : "tracks mastery for"
+    CARDS ||--o{ CARD_PROGRESS : "has retention state"
+
+    USERS ||--o{ STUDY_SESSIONS : "conducts"
+    DECKS ||--o{ STUDY_SESSIONS : "reviewed in"
+    STUDY_SESSIONS ||--o{ REVIEW_LOGS : "logs events in"
+    CARDS ||--o{ REVIEW_LOGS : "evaluated by"
+
+    USERS ||--o{ USER_ACHIEVEMENTS : "unlocked by"
+    ACHIEVEMENTS ||--o{ USER_ACHIEVEMENTS : "awarded in"
+
+    USERS ||--o{ AUDIT_LOGS : "triggers"
+
+    USERS {
+        uuid user_id PK
+        varchar username UK
+        varchar email UK
+        boolean is_active
+        timestamptz created_at
+    }
+
+    USER_CREDENTIALS {
+        uuid user_id PK, FK
+        varchar password_hash
+        varchar salt
+        varchar mfa_secret
+        timestamptz password_last_changed
+    }
+
+    ROLES {
+        uuid role_id PK
+        varchar role_name UK
+        text role_description
+    }
+
+    USER_ROLES {
+        uuid user_id PK, FK
+        uuid role_id PK, FK
+        timestamptz assigned_at
+    }
+
+    USER_PROFILES {
+        uuid user_id PK, FK
+        varchar first_name
+        varchar last_name
+        varchar timezone
+        smallint daily_goal_minutes
+        timestamptz updated_at
+    }
+
+    COGNITIVE_BASELINES {
+        uuid user_id PK, FK
+        numeric working_memory_capacity
+        integer processing_speed_ms
+        timestamptz baseline_assessed_at
+    }
+
+    TOPICS {
+        uuid topic_id PK
+        varchar topic_name
+        varchar topic_slug UK
+        varchar topic_category
+        text description
+    }
+
+    DECKS {
+        uuid deck_id PK
+        uuid topic_id FK
+        uuid owner_user_id FK
+        varchar deck_title
+        varchar deck_slug UK
+        varchar deck_visibility
+        timestamptz created_at
+    }
+
+    CARDS {
+        uuid card_id PK
+        uuid deck_id FK
+        text front_prompt
+        text back_solution
+        varchar card_type
+        smallint card_difficulty
+        timestamptz created_at
+    }
+
+    CARD_MEDIA {
+        uuid media_id PK
+        uuid card_id FK
+        varchar media_url
+        varchar media_type
+        integer file_size_bytes
+        timestamptz uploaded_at
+    }
+
+    CARD_PROGRESS {
+        uuid progress_id PK
+        uuid user_id FK, UK
+        uuid card_id FK, UK
+        integer repetition_count
+        numeric ease_factor
+        integer interval_days
+        timestamptz next_review_due
+        varchar retention_state
+        timestamptz last_reviewed_at
+    }
+
+    STUDY_SESSIONS {
+        uuid session_id PK
+        uuid user_id FK
+        uuid deck_id FK
+        timestamptz session_start
+        timestamptz session_end
+        varchar session_mode
+        varchar device_info
+    }
+
+    REVIEW_LOGS {
+        uuid review_id PK
+        uuid session_id FK, UK
+        uuid card_id FK, UK
+        smallint rating
+        integer reaction_time_ms
+        boolean is_correct
+        timestamptz review_timestamp UK
+    }
+
+    ACHIEVEMENTS {
+        uuid achievement_id PK
+        varchar badge_name UK
+        varchar badge_slug UK
+        varchar badge_tier
+        integer xp_value
+        text criteria_description
+    }
+
+    USER_ACHIEVEMENTS {
+        uuid user_achievement_id PK
+        uuid user_id FK, UK
+        uuid achievement_id FK, UK
+        timestamptz awarded_at
+    }
+
+    AUDIT_LOGS {
+        uuid log_id PK
+        uuid user_id FK
+        varchar action_type
+        varchar target_entity
+        inet ip_address
+        text user_agent
+        timestamptz created_at
+    }
+

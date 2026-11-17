@@ -1,0 +1,463 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2200 1280" width="2200" height="1280" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="0" dy="6" stdDeviation="5" flood-color="#000000" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+  <!-- Title & Metadata -->
+  <rect x="40" y="30" width="2120" height="70" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5" />
+  <text x="70" y="73" fill="#38bdf8" font-size="24" font-weight="bold" letter-spacing="0.5">COGNIFY — ENTITY-RELATIONSHIP (ER) RELATIONAL SCHEMA</text>
+  <text x="1380" y="72" fill="#94a3b8" font-size="14">Team T0004 · Section D · Checkpoint 2 (CP2) · PostgreSQL 15+ · 16 BCNF Entities</text>
+
+  <!-- Legend -->
+  <g transform="translate(1820, 42)">
+    <rect x="0" y="0" width="310" height="46" rx="6" fill="#0f172a" stroke="#334155" stroke-width="1" />
+    <circle cx="20" cy="23" r="5" fill="#fbbf24" />
+    <text x="32" y="27" fill="#cbd5e1" font-size="11" font-weight="600">PK: Primary</text>
+    <circle cx="115" cy="23" r="5" fill="#38bdf8" />
+    <text x="127" y="27" fill="#cbd5e1" font-size="11" font-weight="600">FK: Foreign</text>
+    <circle cx="210" cy="23" r="5" fill="#34d399" />
+    <text x="222" y="27" fill="#cbd5e1" font-size="11" font-weight="600">UK: Unique</text>
+  </g>
+  <path d="M 450 170 L 390 170" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 450 210 L 420 210 L 420 410 L 390 410" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 450 250 L 410 250 L 410 650 L 390 650" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 620 280 L 620 440" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 500 280 L 500 840" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 390 890 L 450 890" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 790 200 L 820 200 L 820 420 L 860 420" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 1030 280 L 1030 380" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 1040 570 L 1040 700" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 1040 890 L 1040 1000" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 790 240 L 830 240 L 830 340 L 1260 340 L 1260 590 L 1300 590" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 1220 740 L 1300 740" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 790 160 L 840 160 L 840 320 L 1720 320 L 1720 420 L 1750 420" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 1220 460 L 1750 460" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 1920 570 L 1920 700" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 1220 780 L 1710 780 L 1710 750 L 1750 750" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 790 150 L 820 150 L 820 120 L 1720 120 L 1720 160 L 1750 160" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <path d="M 1670 180 L 1750 180" fill="none" stroke="#475569" stroke-width="2" stroke-dasharray="4,4" />
+  <g id="table-users">
+    <rect x="450" y="140" width="340" height="176" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 450 148 Q 450 140 458 140 L 782 140 Q 790 140 790 148 L 790 184 L 450 184 Z" fill="#1e293b" />
+    <line x1="450" y1="184" x2="790" y2="184" stroke="#334155" stroke-width="1.5" />
+    <text x="464" y="165" fill="#38bdf8" font-size="14" font-weight="bold">users</text>
+    <text x="776" y="164" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">IAM · Core Account</text>
+    <rect x="462" y="190" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="474" y="201" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="494" y="202" fill="#f8fafc" font-size="12" font-family="monospace">user_id</text>
+    <text x="776" y="202" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="462" y="214" width="24" height="15" rx="3" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="1" />
+    <text x="474" y="225" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">UK</text>
+    <text x="494" y="226" fill="#f8fafc" font-size="12" font-family="monospace">username</text>
+    <text x="776" y="226" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(50)</text>
+    <rect x="462" y="238" width="24" height="15" rx="3" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="1" />
+    <text x="474" y="249" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">UK</text>
+    <text x="494" y="250" fill="#f8fafc" font-size="12" font-family="monospace">email</text>
+    <text x="776" y="250" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(255)</text>
+    <circle cx="474" cy="270" r="2" fill="#475569" />
+    <text x="494" y="274" fill="#f8fafc" font-size="12" font-family="monospace">is_active</text>
+    <text x="776" y="274" fill="#94a3b8" font-size="11" text-anchor="end">BOOLEAN</text>
+    <circle cx="474" cy="294" r="2" fill="#475569" />
+    <text x="494" y="298" fill="#f8fafc" font-size="12" font-family="monospace">created_at</text>
+    <text x="776" y="298" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-user_credentials">
+    <rect x="50" y="140" width="340" height="176" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 50 148 Q 50 140 58 140 L 382 140 Q 390 140 390 148 L 390 184 L 50 184 Z" fill="#1e293b" />
+    <line x1="50" y1="184" x2="390" y2="184" stroke="#334155" stroke-width="1.5" />
+    <text x="64" y="165" fill="#38bdf8" font-size="14" font-weight="bold">user_credentials</text>
+    <text x="376" y="164" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">IAM · Password Auth</text>
+    <rect x="62" y="190" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="74" y="201" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="94" y="202" fill="#f8fafc" font-size="12" font-family="monospace">user_id</text>
+    <text x="376" y="202" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="74" cy="222" r="2" fill="#475569" />
+    <text x="94" y="226" fill="#f8fafc" font-size="12" font-family="monospace">password_hash</text>
+    <text x="376" y="226" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(255)</text>
+    <circle cx="74" cy="246" r="2" fill="#475569" />
+    <text x="94" y="250" fill="#f8fafc" font-size="12" font-family="monospace">salt</text>
+    <text x="376" y="250" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(64)</text>
+    <circle cx="74" cy="270" r="2" fill="#475569" />
+    <text x="94" y="274" fill="#f8fafc" font-size="12" font-family="monospace">mfa_secret</text>
+    <text x="376" y="274" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(128)</text>
+    <circle cx="74" cy="294" r="2" fill="#475569" />
+    <text x="94" y="298" fill="#f8fafc" font-size="12" font-family="monospace">password_last_changed</text>
+    <text x="376" y="298" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-user_profiles">
+    <rect x="50" y="380" width="340" height="200" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 50 388 Q 50 380 58 380 L 382 380 Q 390 380 390 388 L 390 424 L 50 424 Z" fill="#1e293b" />
+    <line x1="50" y1="424" x2="390" y2="424" stroke="#334155" stroke-width="1.5" />
+    <text x="64" y="405" fill="#38bdf8" font-size="14" font-weight="bold">user_profiles</text>
+    <text x="376" y="404" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">User Preferences</text>
+    <rect x="62" y="430" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="74" y="441" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="94" y="442" fill="#f8fafc" font-size="12" font-family="monospace">user_id</text>
+    <text x="376" y="442" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="74" cy="462" r="2" fill="#475569" />
+    <text x="94" y="466" fill="#f8fafc" font-size="12" font-family="monospace">first_name</text>
+    <text x="376" y="466" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(100)</text>
+    <circle cx="74" cy="486" r="2" fill="#475569" />
+    <text x="94" y="490" fill="#f8fafc" font-size="12" font-family="monospace">last_name</text>
+    <text x="376" y="490" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(100)</text>
+    <circle cx="74" cy="510" r="2" fill="#475569" />
+    <text x="94" y="514" fill="#f8fafc" font-size="12" font-family="monospace">timezone</text>
+    <text x="376" y="514" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(50)</text>
+    <circle cx="74" cy="534" r="2" fill="#475569" />
+    <text x="94" y="538" fill="#f8fafc" font-size="12" font-family="monospace">daily_goal_minutes</text>
+    <text x="376" y="538" fill="#94a3b8" font-size="11" text-anchor="end">SMALLINT</text>
+    <circle cx="74" cy="558" r="2" fill="#475569" />
+    <text x="94" y="562" fill="#f8fafc" font-size="12" font-family="monospace">updated_at</text>
+    <text x="376" y="562" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-cognitive_baselines">
+    <rect x="50" y="620" width="340" height="152" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 50 628 Q 50 620 58 620 L 382 620 Q 390 620 390 628 L 390 664 L 50 664 Z" fill="#1e293b" />
+    <line x1="50" y1="664" x2="390" y2="664" stroke="#334155" stroke-width="1.5" />
+    <text x="64" y="645" fill="#38bdf8" font-size="14" font-weight="bold">cognitive_baselines</text>
+    <text x="376" y="644" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Psychometric Baseline</text>
+    <rect x="62" y="670" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="74" y="681" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="94" y="682" fill="#f8fafc" font-size="12" font-family="monospace">user_id</text>
+    <text x="376" y="682" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="74" cy="702" r="2" fill="#475569" />
+    <text x="94" y="706" fill="#f8fafc" font-size="12" font-family="monospace">working_memory_capacity</text>
+    <text x="376" y="706" fill="#94a3b8" font-size="11" text-anchor="end">NUMERIC(4,2)</text>
+    <circle cx="74" cy="726" r="2" fill="#475569" />
+    <text x="94" y="730" fill="#f8fafc" font-size="12" font-family="monospace">processing_speed_ms</text>
+    <text x="376" y="730" fill="#94a3b8" font-size="11" text-anchor="end">INT</text>
+    <circle cx="74" cy="750" r="2" fill="#475569" />
+    <text x="94" y="754" fill="#f8fafc" font-size="12" font-family="monospace">baseline_assessed_at</text>
+    <text x="376" y="754" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-roles">
+    <rect x="50" y="840" width="340" height="128" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 50 848 Q 50 840 58 840 L 382 840 Q 390 840 390 848 L 390 884 L 50 884 Z" fill="#1e293b" />
+    <line x1="50" y1="884" x2="390" y2="884" stroke="#334155" stroke-width="1.5" />
+    <text x="64" y="865" fill="#38bdf8" font-size="14" font-weight="bold">roles</text>
+    <text x="376" y="864" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">IAM · RBAC Definitions</text>
+    <rect x="62" y="890" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="74" y="901" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="94" y="902" fill="#f8fafc" font-size="12" font-family="monospace">role_id</text>
+    <text x="376" y="902" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="62" y="914" width="24" height="15" rx="3" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="1" />
+    <text x="74" y="925" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">UK</text>
+    <text x="94" y="926" fill="#f8fafc" font-size="12" font-family="monospace">role_name</text>
+    <text x="376" y="926" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(50)</text>
+    <circle cx="74" cy="946" r="2" fill="#475569" />
+    <text x="94" y="950" fill="#f8fafc" font-size="12" font-family="monospace">role_description</text>
+    <text x="376" y="950" fill="#94a3b8" font-size="11" text-anchor="end">TEXT</text>
+  </g>
+  <g id="table-user_roles">
+    <rect x="450" y="840" width="340" height="128" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 450 848 Q 450 840 458 840 L 782 840 Q 790 840 790 848 L 790 884 L 450 884 Z" fill="#1e293b" />
+    <line x1="450" y1="884" x2="790" y2="884" stroke="#334155" stroke-width="1.5" />
+    <text x="464" y="865" fill="#38bdf8" font-size="14" font-weight="bold">user_roles</text>
+    <text x="776" y="864" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">IAM · RBAC Junction</text>
+    <rect x="462" y="890" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="474" y="901" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="494" y="902" fill="#f8fafc" font-size="12" font-family="monospace">user_id</text>
+    <text x="776" y="902" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="462" y="914" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="474" y="925" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="494" y="926" fill="#f8fafc" font-size="12" font-family="monospace">role_id</text>
+    <text x="776" y="926" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="474" cy="946" r="2" fill="#475569" />
+    <text x="494" y="950" fill="#f8fafc" font-size="12" font-family="monospace">assigned_at</text>
+    <text x="776" y="950" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-topics">
+    <rect x="860" y="140" width="350" height="176" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 860 148 Q 860 140 868 140 L 1202 140 Q 1210 140 1210 148 L 1210 184 L 860 184 Z" fill="#1e293b" />
+    <line x1="860" y1="184" x2="1210" y2="184" stroke="#334155" stroke-width="1.5" />
+    <text x="874" y="165" fill="#38bdf8" font-size="14" font-weight="bold">topics</text>
+    <text x="1196" y="164" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Content Taxonomy</text>
+    <rect x="872" y="190" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="884" y="201" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="904" y="202" fill="#f8fafc" font-size="12" font-family="monospace">topic_id</text>
+    <text x="1196" y="202" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="884" cy="222" r="2" fill="#475569" />
+    <text x="904" y="226" fill="#f8fafc" font-size="12" font-family="monospace">topic_name</text>
+    <text x="1196" y="226" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(100)</text>
+    <rect x="872" y="238" width="24" height="15" rx="3" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="1" />
+    <text x="884" y="249" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">UK</text>
+    <text x="904" y="250" fill="#f8fafc" font-size="12" font-family="monospace">topic_slug</text>
+    <text x="1196" y="250" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(120)</text>
+    <circle cx="884" cy="270" r="2" fill="#475569" />
+    <text x="904" y="274" fill="#f8fafc" font-size="12" font-family="monospace">topic_category</text>
+    <text x="1196" y="274" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(50)</text>
+    <circle cx="884" cy="294" r="2" fill="#475569" />
+    <text x="904" y="298" fill="#f8fafc" font-size="12" font-family="monospace">description</text>
+    <text x="1196" y="298" fill="#94a3b8" font-size="11" text-anchor="end">TEXT</text>
+  </g>
+  <g id="table-decks">
+    <rect x="860" y="380" width="360" height="224" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 860 388 Q 860 380 868 380 L 1212 380 Q 1220 380 1220 388 L 1220 424 L 860 424 Z" fill="#1e293b" />
+    <line x1="860" y1="424" x2="1220" y2="424" stroke="#334155" stroke-width="1.5" />
+    <text x="874" y="405" fill="#38bdf8" font-size="14" font-weight="bold">decks</text>
+    <text x="1206" y="404" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Flashcard Decks</text>
+    <rect x="872" y="430" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="884" y="441" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="904" y="442" fill="#f8fafc" font-size="12" font-family="monospace">deck_id</text>
+    <text x="1206" y="442" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="872" y="454" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="884" y="465" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="904" y="466" fill="#f8fafc" font-size="12" font-family="monospace">topic_id</text>
+    <text x="1206" y="466" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="872" y="478" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="884" y="489" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="904" y="490" fill="#f8fafc" font-size="12" font-family="monospace">owner_user_id</text>
+    <text x="1206" y="490" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="884" cy="510" r="2" fill="#475569" />
+    <text x="904" y="514" fill="#f8fafc" font-size="12" font-family="monospace">deck_title</text>
+    <text x="1206" y="514" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(150)</text>
+    <rect x="872" y="526" width="24" height="15" rx="3" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="1" />
+    <text x="884" y="537" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">UK</text>
+    <text x="904" y="538" fill="#f8fafc" font-size="12" font-family="monospace">deck_slug</text>
+    <text x="1206" y="538" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(180)</text>
+    <circle cx="884" cy="558" r="2" fill="#475569" />
+    <text x="904" y="562" fill="#f8fafc" font-size="12" font-family="monospace">deck_visibility</text>
+    <text x="1206" y="562" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(20)</text>
+    <circle cx="884" cy="582" r="2" fill="#475569" />
+    <text x="904" y="586" fill="#f8fafc" font-size="12" font-family="monospace">created_at</text>
+    <text x="1206" y="586" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-cards">
+    <rect x="860" y="700" width="360" height="224" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 860 708 Q 860 700 868 700 L 1212 700 Q 1220 700 1220 708 L 1220 744 L 860 744 Z" fill="#1e293b" />
+    <line x1="860" y1="744" x2="1220" y2="744" stroke="#334155" stroke-width="1.5" />
+    <text x="874" y="725" fill="#38bdf8" font-size="14" font-weight="bold">cards</text>
+    <text x="1206" y="724" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Recall Flashcards</text>
+    <rect x="872" y="750" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="884" y="761" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="904" y="762" fill="#f8fafc" font-size="12" font-family="monospace">card_id</text>
+    <text x="1206" y="762" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="872" y="774" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="884" y="785" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="904" y="786" fill="#f8fafc" font-size="12" font-family="monospace">deck_id</text>
+    <text x="1206" y="786" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="884" cy="806" r="2" fill="#475569" />
+    <text x="904" y="810" fill="#f8fafc" font-size="12" font-family="monospace">front_prompt</text>
+    <text x="1206" y="810" fill="#94a3b8" font-size="11" text-anchor="end">TEXT</text>
+    <circle cx="884" cy="830" r="2" fill="#475569" />
+    <text x="904" y="834" fill="#f8fafc" font-size="12" font-family="monospace">back_solution</text>
+    <text x="1206" y="834" fill="#94a3b8" font-size="11" text-anchor="end">TEXT</text>
+    <circle cx="884" cy="854" r="2" fill="#475569" />
+    <text x="904" y="858" fill="#f8fafc" font-size="12" font-family="monospace">card_type</text>
+    <text x="1206" y="858" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(30)</text>
+    <circle cx="884" cy="878" r="2" fill="#475569" />
+    <text x="904" y="882" fill="#f8fafc" font-size="12" font-family="monospace">card_difficulty</text>
+    <text x="1206" y="882" fill="#94a3b8" font-size="11" text-anchor="end">SMALLINT</text>
+    <circle cx="884" cy="902" r="2" fill="#475569" />
+    <text x="904" y="906" fill="#f8fafc" font-size="12" font-family="monospace">created_at</text>
+    <text x="1206" y="906" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-card_media">
+    <rect x="860" y="1000" width="350" height="200" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 860 1008 Q 860 1000 868 1000 L 1202 1000 Q 1210 1000 1210 1008 L 1210 1044 L 860 1044 Z" fill="#1e293b" />
+    <line x1="860" y1="1044" x2="1210" y2="1044" stroke="#334155" stroke-width="1.5" />
+    <text x="874" y="1025" fill="#38bdf8" font-size="14" font-weight="bold">card_media</text>
+    <text x="1196" y="1024" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Card Attachments</text>
+    <rect x="872" y="1050" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="884" y="1061" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="904" y="1062" fill="#f8fafc" font-size="12" font-family="monospace">media_id</text>
+    <text x="1196" y="1062" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="872" y="1074" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="884" y="1085" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="904" y="1086" fill="#f8fafc" font-size="12" font-family="monospace">card_id</text>
+    <text x="1196" y="1086" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="884" cy="1106" r="2" fill="#475569" />
+    <text x="904" y="1110" fill="#f8fafc" font-size="12" font-family="monospace">media_url</text>
+    <text x="1196" y="1110" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(500)</text>
+    <circle cx="884" cy="1130" r="2" fill="#475569" />
+    <text x="904" y="1134" fill="#f8fafc" font-size="12" font-family="monospace">media_type</text>
+    <text x="1196" y="1134" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(50)</text>
+    <circle cx="884" cy="1154" r="2" fill="#475569" />
+    <text x="904" y="1158" fill="#f8fafc" font-size="12" font-family="monospace">file_size_bytes</text>
+    <text x="1196" y="1158" fill="#94a3b8" font-size="11" text-anchor="end">INT</text>
+    <circle cx="884" cy="1178" r="2" fill="#475569" />
+    <text x="904" y="1182" fill="#f8fafc" font-size="12" font-family="monospace">uploaded_at</text>
+    <text x="1196" y="1182" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-card_progress">
+    <rect x="1300" y="540" width="370" height="272" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 1300 548 Q 1300 540 1308 540 L 1662 540 Q 1670 540 1670 548 L 1670 584 L 1300 584 Z" fill="#1e293b" />
+    <line x1="1300" y1="584" x2="1670" y2="584" stroke="#334155" stroke-width="1.5" />
+    <text x="1314" y="565" fill="#38bdf8" font-size="14" font-weight="bold">card_progress</text>
+    <text x="1656" y="564" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Spaced Repetition (SM-2)</text>
+    <rect x="1312" y="590" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="1324" y="601" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="1344" y="602" fill="#f8fafc" font-size="12" font-family="monospace">progress_id</text>
+    <text x="1656" y="602" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="1312" y="614" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="1324" y="625" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="1344" y="626" fill="#f8fafc" font-size="12" font-family="monospace">user_id</text>
+    <text x="1656" y="626" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="1312" y="638" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="1324" y="649" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="1344" y="650" fill="#f8fafc" font-size="12" font-family="monospace">card_id</text>
+    <text x="1656" y="650" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="1324" cy="670" r="2" fill="#475569" />
+    <text x="1344" y="674" fill="#f8fafc" font-size="12" font-family="monospace">repetition_count</text>
+    <text x="1656" y="674" fill="#94a3b8" font-size="11" text-anchor="end">INT</text>
+    <circle cx="1324" cy="694" r="2" fill="#475569" />
+    <text x="1344" y="698" fill="#f8fafc" font-size="12" font-family="monospace">ease_factor</text>
+    <text x="1656" y="698" fill="#94a3b8" font-size="11" text-anchor="end">NUMERIC(4,2)</text>
+    <circle cx="1324" cy="718" r="2" fill="#475569" />
+    <text x="1344" y="722" fill="#f8fafc" font-size="12" font-family="monospace">interval_days</text>
+    <text x="1656" y="722" fill="#94a3b8" font-size="11" text-anchor="end">INT</text>
+    <circle cx="1324" cy="742" r="2" fill="#475569" />
+    <text x="1344" y="746" fill="#f8fafc" font-size="12" font-family="monospace">next_review_due</text>
+    <text x="1656" y="746" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+    <circle cx="1324" cy="766" r="2" fill="#475569" />
+    <text x="1344" y="770" fill="#f8fafc" font-size="12" font-family="monospace">retention_state</text>
+    <text x="1656" y="770" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(20)</text>
+    <circle cx="1324" cy="790" r="2" fill="#475569" />
+    <text x="1344" y="794" fill="#f8fafc" font-size="12" font-family="monospace">last_reviewed_at</text>
+    <text x="1656" y="794" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-study_sessions">
+    <rect x="1750" y="380" width="350" height="224" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 1750 388 Q 1750 380 1758 380 L 2092 380 Q 2100 380 2100 388 L 2100 424 L 1750 424 Z" fill="#1e293b" />
+    <line x1="1750" y1="424" x2="2100" y2="424" stroke="#334155" stroke-width="1.5" />
+    <text x="1764" y="405" fill="#38bdf8" font-size="14" font-weight="bold">study_sessions</text>
+    <text x="2086" y="404" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Drill Sessions</text>
+    <rect x="1762" y="430" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="1774" y="441" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="1794" y="442" fill="#f8fafc" font-size="12" font-family="monospace">session_id</text>
+    <text x="2086" y="442" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="1762" y="454" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="1774" y="465" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="1794" y="466" fill="#f8fafc" font-size="12" font-family="monospace">user_id</text>
+    <text x="2086" y="466" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="1762" y="478" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="1774" y="489" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="1794" y="490" fill="#f8fafc" font-size="12" font-family="monospace">deck_id</text>
+    <text x="2086" y="490" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="1774" cy="510" r="2" fill="#475569" />
+    <text x="1794" y="514" fill="#f8fafc" font-size="12" font-family="monospace">session_start</text>
+    <text x="2086" y="514" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+    <circle cx="1774" cy="534" r="2" fill="#475569" />
+    <text x="1794" y="538" fill="#f8fafc" font-size="12" font-family="monospace">session_end</text>
+    <text x="2086" y="538" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+    <circle cx="1774" cy="558" r="2" fill="#475569" />
+    <text x="1794" y="562" fill="#f8fafc" font-size="12" font-family="monospace">session_mode</text>
+    <text x="2086" y="562" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(30)</text>
+    <circle cx="1774" cy="582" r="2" fill="#475569" />
+    <text x="1794" y="586" fill="#f8fafc" font-size="12" font-family="monospace">device_info</text>
+    <text x="2086" y="586" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(100)</text>
+  </g>
+  <g id="table-review_logs">
+    <rect x="1750" y="700" width="380" height="224" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 1750 708 Q 1750 700 1758 700 L 2122 700 Q 2130 700 2130 708 L 2130 744 L 1750 744 Z" fill="#1e293b" />
+    <line x1="1750" y1="744" x2="2130" y2="744" stroke="#334155" stroke-width="1.5" />
+    <text x="1764" y="725" fill="#38bdf8" font-size="14" font-weight="bold">review_logs</text>
+    <text x="2116" y="724" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Interaction Telemetry</text>
+    <rect x="1762" y="750" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="1774" y="761" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="1794" y="762" fill="#f8fafc" font-size="12" font-family="monospace">review_id</text>
+    <text x="2116" y="762" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="1762" y="774" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="1774" y="785" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="1794" y="786" fill="#f8fafc" font-size="12" font-family="monospace">session_id</text>
+    <text x="2116" y="786" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="1762" y="798" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="1774" y="809" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="1794" y="810" fill="#f8fafc" font-size="12" font-family="monospace">card_id</text>
+    <text x="2116" y="810" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="1774" cy="830" r="2" fill="#475569" />
+    <text x="1794" y="834" fill="#f8fafc" font-size="12" font-family="monospace">rating</text>
+    <text x="2116" y="834" fill="#94a3b8" font-size="11" text-anchor="end">SMALLINT (0-5)</text>
+    <circle cx="1774" cy="854" r="2" fill="#475569" />
+    <text x="1794" y="858" fill="#f8fafc" font-size="12" font-family="monospace">reaction_time_ms</text>
+    <text x="2116" y="858" fill="#94a3b8" font-size="11" text-anchor="end">INT</text>
+    <circle cx="1774" cy="878" r="2" fill="#475569" />
+    <text x="1794" y="882" fill="#f8fafc" font-size="12" font-family="monospace">is_correct</text>
+    <text x="2116" y="882" fill="#94a3b8" font-size="11" text-anchor="end">BOOLEAN</text>
+    <rect x="1762" y="894" width="24" height="15" rx="3" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="1" />
+    <text x="1774" y="905" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">UK</text>
+    <text x="1794" y="906" fill="#f8fafc" font-size="12" font-family="monospace">review_timestamp</text>
+    <text x="2116" y="906" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-achievements">
+    <rect x="1300" y="140" width="370" height="200" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 1300 148 Q 1300 140 1308 140 L 1662 140 Q 1670 140 1670 148 L 1670 184 L 1300 184 Z" fill="#1e293b" />
+    <line x1="1300" y1="184" x2="1670" y2="184" stroke="#334155" stroke-width="1.5" />
+    <text x="1314" y="165" fill="#38bdf8" font-size="14" font-weight="bold">achievements</text>
+    <text x="1656" y="164" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Milestone Badges</text>
+    <rect x="1312" y="190" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="1324" y="201" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="1344" y="202" fill="#f8fafc" font-size="12" font-family="monospace">achievement_id</text>
+    <text x="1656" y="202" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="1312" y="214" width="24" height="15" rx="3" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="1" />
+    <text x="1324" y="225" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">UK</text>
+    <text x="1344" y="226" fill="#f8fafc" font-size="12" font-family="monospace">badge_name</text>
+    <text x="1656" y="226" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(100)</text>
+    <rect x="1312" y="238" width="24" height="15" rx="3" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="1" />
+    <text x="1324" y="249" fill="#34d399" font-size="9" font-weight="bold" text-anchor="middle">UK</text>
+    <text x="1344" y="250" fill="#f8fafc" font-size="12" font-family="monospace">badge_slug</text>
+    <text x="1656" y="250" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(120)</text>
+    <circle cx="1324" cy="270" r="2" fill="#475569" />
+    <text x="1344" y="274" fill="#f8fafc" font-size="12" font-family="monospace">badge_tier</text>
+    <text x="1656" y="274" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(20)</text>
+    <circle cx="1324" cy="294" r="2" fill="#475569" />
+    <text x="1344" y="298" fill="#f8fafc" font-size="12" font-family="monospace">xp_value</text>
+    <text x="1656" y="298" fill="#94a3b8" font-size="11" text-anchor="end">INT</text>
+    <circle cx="1324" cy="318" r="2" fill="#475569" />
+    <text x="1344" y="322" fill="#f8fafc" font-size="12" font-family="monospace">criteria_description</text>
+    <text x="1656" y="322" fill="#94a3b8" font-size="11" text-anchor="end">TEXT</text>
+  </g>
+  <g id="table-user_achievements">
+    <rect x="1750" y="140" width="360" height="152" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 1750 148 Q 1750 140 1758 140 L 2102 140 Q 2110 140 2110 148 L 2110 184 L 1750 184 Z" fill="#1e293b" />
+    <line x1="1750" y1="184" x2="2110" y2="184" stroke="#334155" stroke-width="1.5" />
+    <text x="1764" y="165" fill="#38bdf8" font-size="14" font-weight="bold">user_achievements</text>
+    <text x="2096" y="164" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Unlocked Badges</text>
+    <rect x="1762" y="190" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="1774" y="201" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="1794" y="202" fill="#f8fafc" font-size="12" font-family="monospace">user_achievement_id</text>
+    <text x="2096" y="202" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="1762" y="214" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="1774" y="225" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="1794" y="226" fill="#f8fafc" font-size="12" font-family="monospace">user_id</text>
+    <text x="2096" y="226" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="1762" y="238" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="1774" y="249" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="1794" y="250" fill="#f8fafc" font-size="12" font-family="monospace">achievement_id</text>
+    <text x="2096" y="250" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="1774" cy="270" r="2" fill="#475569" />
+    <text x="1794" y="274" fill="#f8fafc" font-size="12" font-family="monospace">awarded_at</text>
+    <text x="2096" y="274" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+  <g id="table-audit_logs">
+    <rect x="450" y="440" width="340" height="224" rx="8" fill="#131e36" stroke="#334155" stroke-width="1.5" filter="url(#shadow)" />
+    <path d="M 450 448 Q 450 440 458 440 L 782 440 Q 790 440 790 448 L 790 484 L 450 484 Z" fill="#1e293b" />
+    <line x1="450" y1="484" x2="790" y2="484" stroke="#334155" stroke-width="1.5" />
+    <text x="464" y="465" fill="#38bdf8" font-size="14" font-weight="bold">audit_logs</text>
+    <text x="776" y="464" fill="#94a3b8" font-size="10" text-anchor="end" font-weight="600">Security Audit Trail</text>
+    <rect x="462" y="490" width="24" height="15" rx="3" fill="#fbbf24" fill-opacity="0.2" stroke="#fbbf24" stroke-width="1" />
+    <text x="474" y="501" fill="#fbbf24" font-size="9" font-weight="bold" text-anchor="middle">PK</text>
+    <text x="494" y="502" fill="#f8fafc" font-size="12" font-family="monospace">log_id</text>
+    <text x="776" y="502" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <rect x="462" y="514" width="24" height="15" rx="3" fill="#38bdf8" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1" />
+    <text x="474" y="525" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">FK</text>
+    <text x="494" y="526" fill="#f8fafc" font-size="12" font-family="monospace">user_id</text>
+    <text x="776" y="526" fill="#94a3b8" font-size="11" text-anchor="end">UUID</text>
+    <circle cx="474" cy="546" r="2" fill="#475569" />
+    <text x="494" y="550" fill="#f8fafc" font-size="12" font-family="monospace">action_type</text>
+    <text x="776" y="550" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(100)</text>
+    <circle cx="474" cy="570" r="2" fill="#475569" />
+    <text x="494" y="574" fill="#f8fafc" font-size="12" font-family="monospace">target_entity</text>
+    <text x="776" y="574" fill="#94a3b8" font-size="11" text-anchor="end">VARCHAR(100)</text>
+    <circle cx="474" cy="594" r="2" fill="#475569" />
+    <text x="494" y="598" fill="#f8fafc" font-size="12" font-family="monospace">ip_address</text>
+    <text x="776" y="598" fill="#94a3b8" font-size="11" text-anchor="end">INET</text>
+    <circle cx="474" cy="618" r="2" fill="#475569" />
+    <text x="494" y="622" fill="#f8fafc" font-size="12" font-family="monospace">user_agent</text>
+    <text x="776" y="622" fill="#94a3b8" font-size="11" text-anchor="end">TEXT</text>
+    <circle cx="474" cy="642" r="2" fill="#475569" />
+    <text x="494" y="646" fill="#f8fafc" font-size="12" font-family="monospace">created_at</text>
+    <text x="776" y="646" fill="#94a3b8" font-size="11" text-anchor="end">TIMESTAMPTZ</text>
+  </g>
+</svg>
