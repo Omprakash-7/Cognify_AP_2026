@@ -2,28 +2,25 @@
 
 ## Write behavior
 
-W9 inserts a new study session with a generated identifier and a start time.
-The write itself is a single insert, but the business rule is usually stronger:
-a learner should not have two simultaneously active sessions for the same
-deck (or perhaps any deck).
+W9 inserts a session using a stable `session_id` and start time. Its
+`ON CONFLICT (session_id) DO NOTHING` makes a retry safe when the caller reuses
+that ID: a retry does not create a second row. A client that generates a new ID
+for every retry does not get that protection.
 
 ## Concurrency boundary
 
-A preliminary `SELECT` for an existing session followed by an `INSERT` is not
-enough to guarantee that rule. Two requests can both observe no active session
-and then both insert. The database needs a uniqueness rule that matches the
-chosen scope, such as a partial unique index for one active session per learner
-and deck, or application locking/serialization with explicit retry behavior.
-The current schema and W9 should be read against the product's intended rule
-before claiming duplicate-session prevention.
+A separate business rule may require one active session per learner and deck
+(or one per learner). W9's primary-key conflict target does not enforce that
+rule: two distinct session IDs can still represent concurrent active sessions.
+A preliminary `SELECT` followed by an `INSERT` is also racy. Enforce the chosen
+scope with a matching database uniqueness rule or serialized application
+logic, then define how a conflicting request should resume or reject a session.
 
 ## Retry and idempotency
 
-If a client retries after a timeout, a generated ID on every attempt can create
-multiple sessions. An idempotency key tied to the client request can make
-retries safe, but it needs a uniqueness constraint and a defined response for a
-replayed key. `ON CONFLICT` is only meaningful when the conflict target
-represents that business identity.
+The stable ID in the workload acts as an idempotency key only if a production
+caller can preserve and reuse it across retries. `ON CONFLICT` is only
+meaningful when the conflict target represents that request identity.
 
 ## Evidence
 
