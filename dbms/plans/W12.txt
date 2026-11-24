@@ -1,0 +1,35 @@
+=== W12 run 1 ===
+Update on study_sessions  (cost=0.00..4.90 rows=0 width=0) (actual time=0.136..0.136 rows=0.00 loops=1)
+   Buffers: shared hit=35
+   ->  Seq Scan on study_sessions  (cost=0.00..4.90 rows=1 width=14) (actual time=0.004..0.009 rows=1.00 loops=1)
+         Filter: ((session_end IS NULL) AND (session_id = '00000000-0000-0000-0000-000000003002'::uuid))
+         Rows Removed by Filter: 151
+         Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=67
+ Planning Time: 0.181 ms
+ Execution Time: 0.191 ms
+
+=== W12 run 2 ===
+Update on study_sessions  (cost=0.00..4.90 rows=0 width=0) (actual time=0.111..0.111 rows=0.00 loops=1)
+   Buffers: shared hit=35
+   ->  Seq Scan on study_sessions  (cost=0.00..4.90 rows=1 width=14) (actual time=0.007..0.011 rows=1.00 loops=1)
+         Filter: ((session_end IS NULL) AND (session_id = '00000000-0000-0000-0000-000000003002'::uuid))
+         Rows Removed by Filter: 151
+         Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=67
+ Planning Time: 0.201 ms
+ Execution Time: 0.169 ms
+
+=== W12 run 3 ===
+Update on study_sessions  (cost=0.00..4.90 rows=0 width=0) (actual time=0.107..0.107 rows=0.00 loops=1)
+   Buffers: shared hit=35
+   ->  Seq Scan on study_sessions  (cost=0.00..4.90 rows=1 width=14) (actual time=0.007..0.011 rows=1.00 loops=1)
+         Filter: ((session_end IS NULL) AND (session_id = '00000000-0000-0000-0000-000000003002'::uuid))
+         Rows Removed by Filter: 151
+         Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=67
+ Planning Time: 0.159 ms
+ Execution Time: 0.158 ms

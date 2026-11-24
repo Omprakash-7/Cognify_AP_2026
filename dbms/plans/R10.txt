@@ -1,0 +1,95 @@
+=== R10 run 1 ===
+HashAggregate  (cost=52.91..54.31 rows=35 width=170) (actual time=0.090..0.091 rows=1.00 loops=1)
+   Group Key: d.deck_title
+   Batches: 1  Memory Usage: 32kB
+   Buffers: shared hit=44
+   ->  Nested Loop Left Join  (cost=9.82..52.10 rows=81 width=107) (actual time=0.023..0.073 rows=81.00 loops=1)
+         Buffers: shared hit=44
+         ->  Hash Join  (cost=4.91..6.37 rows=1 width=86) (actual time=0.014..0.017 rows=1.00 loops=1)
+               Hash Cond: (d.deck_id = s.deck_id)
+               Buffers: shared hit=4
+               ->  Seq Scan on decks d  (cost=0.00..1.35 rows=35 width=54) (actual time=0.002..0.003 rows=35.00 loops=1)
+                     Buffers: shared hit=1
+               ->  Hash  (cost=4.90..4.90 rows=1 width=64) (actual time=0.009..0.009 rows=1.00 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     Buffers: shared hit=3
+                     ->  Seq Scan on study_sessions s  (cost=0.00..4.90 rows=1 width=64) (actual time=0.002..0.007 rows=1.00 loops=1)
+                           Filter: (session_id = '00000000-0000-0000-0000-000000003001'::uuid)
+                           Rows Removed by Filter: 151
+                           Buffers: shared hit=3
+         ->  Bitmap Heap Scan on review_logs r  (cost=4.91..44.92 rows=81 width=37) (actual time=0.008..0.051 rows=81.00 loops=1)
+               Recheck Cond: (session_id = '00000000-0000-0000-0000-000000003001'::uuid)
+               Heap Blocks: exact=38
+               Buffers: shared hit=40
+               ->  Bitmap Index Scan on idx_review_logs_session_id  (cost=0.00..4.89 rows=81 width=0) (actual time=0.004..0.004 rows=81.00 loops=1)
+                     Index Cond: (session_id = '00000000-0000-0000-0000-000000003001'::uuid)
+                     Index Searches: 1
+                     Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=271
+ Planning Time: 0.542 ms
+ Execution Time: 0.130 ms
+
+=== R10 run 2 ===
+HashAggregate  (cost=52.91..54.31 rows=35 width=170) (actual time=0.084..0.085 rows=1.00 loops=1)
+   Group Key: d.deck_title
+   Batches: 1  Memory Usage: 32kB
+   Buffers: shared hit=44
+   ->  Nested Loop Left Join  (cost=9.82..52.10 rows=81 width=107) (actual time=0.024..0.068 rows=81.00 loops=1)
+         Buffers: shared hit=44
+         ->  Hash Join  (cost=4.91..6.37 rows=1 width=86) (actual time=0.014..0.017 rows=1.00 loops=1)
+               Hash Cond: (d.deck_id = s.deck_id)
+               Buffers: shared hit=4
+               ->  Seq Scan on decks d  (cost=0.00..1.35 rows=35 width=54) (actual time=0.002..0.003 rows=35.00 loops=1)
+                     Buffers: shared hit=1
+               ->  Hash  (cost=4.90..4.90 rows=1 width=64) (actual time=0.009..0.009 rows=1.00 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     Buffers: shared hit=3
+                     ->  Seq Scan on study_sessions s  (cost=0.00..4.90 rows=1 width=64) (actual time=0.002..0.007 rows=1.00 loops=1)
+                           Filter: (session_id = '00000000-0000-0000-0000-000000003001'::uuid)
+                           Rows Removed by Filter: 151
+                           Buffers: shared hit=3
+         ->  Bitmap Heap Scan on review_logs r  (cost=4.91..44.92 rows=81 width=37) (actual time=0.009..0.047 rows=81.00 loops=1)
+               Recheck Cond: (session_id = '00000000-0000-0000-0000-000000003001'::uuid)
+               Heap Blocks: exact=38
+               Buffers: shared hit=40
+               ->  Bitmap Index Scan on idx_review_logs_session_id  (cost=0.00..4.89 rows=81 width=0) (actual time=0.005..0.005 rows=81.00 loops=1)
+                     Index Cond: (session_id = '00000000-0000-0000-0000-000000003001'::uuid)
+                     Index Searches: 1
+                     Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=271
+ Planning Time: 0.613 ms
+ Execution Time: 0.124 ms
+
+=== R10 run 3 ===
+HashAggregate  (cost=52.91..54.31 rows=35 width=170) (actual time=0.083..0.083 rows=1.00 loops=1)
+   Group Key: d.deck_title
+   Batches: 1  Memory Usage: 32kB
+   Buffers: shared hit=44
+   ->  Nested Loop Left Join  (cost=9.82..52.10 rows=81 width=107) (actual time=0.023..0.067 rows=81.00 loops=1)
+         Buffers: shared hit=44
+         ->  Hash Join  (cost=4.91..6.37 rows=1 width=86) (actual time=0.014..0.016 rows=1.00 loops=1)
+               Hash Cond: (d.deck_id = s.deck_id)
+               Buffers: shared hit=4
+               ->  Seq Scan on decks d  (cost=0.00..1.35 rows=35 width=54) (actual time=0.002..0.003 rows=35.00 loops=1)
+                     Buffers: shared hit=1
+               ->  Hash  (cost=4.90..4.90 rows=1 width=64) (actual time=0.009..0.009 rows=1.00 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                     Buffers: shared hit=3
+                     ->  Seq Scan on study_sessions s  (cost=0.00..4.90 rows=1 width=64) (actual time=0.002..0.007 rows=1.00 loops=1)
+                           Filter: (session_id = '00000000-0000-0000-0000-000000003001'::uuid)
+                           Rows Removed by Filter: 151
+                           Buffers: shared hit=3
+         ->  Bitmap Heap Scan on review_logs r  (cost=4.91..44.92 rows=81 width=37) (actual time=0.008..0.047 rows=81.00 loops=1)
+               Recheck Cond: (session_id = '00000000-0000-0000-0000-000000003001'::uuid)
+               Heap Blocks: exact=38
+               Buffers: shared hit=40
+               ->  Bitmap Index Scan on idx_review_logs_session_id  (cost=0.00..4.89 rows=81 width=0) (actual time=0.005..0.005 rows=81.00 loops=1)
+                     Index Cond: (session_id = '00000000-0000-0000-0000-000000003001'::uuid)
+                     Index Searches: 1
+                     Buffers: shared hit=2
+ Planning:
+   Buffers: shared hit=271
+ Planning Time: 0.650 ms
+ Execution Time: 0.124 ms

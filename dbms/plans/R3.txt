@@ -1,0 +1,47 @@
+=== R3 run 1 ===
+Nested Loop  (cost=0.00..3.32 rows=1 width=73) (actual time=0.010..0.014 rows=1.00 loops=1)
+   Buffers: shared hit=2
+   ->  Seq Scan on users u  (cost=0.00..1.65 rows=1 width=23) (actual time=0.004..0.005 rows=1.00 loops=1)
+         Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+         Rows Removed by Filter: 51
+         Buffers: shared hit=1
+   ->  Seq Scan on cognitive_baselines cb  (cost=0.00..1.65 rows=1 width=34) (actual time=0.001..0.003 rows=1.00 loops=1)
+         Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+         Rows Removed by Filter: 51
+         Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=146
+ Planning Time: 0.318 ms
+ Execution Time: 0.069 ms
+
+=== R3 run 2 ===
+Nested Loop  (cost=0.00..3.32 rows=1 width=73) (actual time=0.009..0.013 rows=1.00 loops=1)
+   Buffers: shared hit=2
+   ->  Seq Scan on users u  (cost=0.00..1.65 rows=1 width=23) (actual time=0.003..0.005 rows=1.00 loops=1)
+         Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+         Rows Removed by Filter: 51
+         Buffers: shared hit=1
+   ->  Seq Scan on cognitive_baselines cb  (cost=0.00..1.65 rows=1 width=34) (actual time=0.001..0.003 rows=1.00 loops=1)
+         Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+         Rows Removed by Filter: 51
+         Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=146
+ Planning Time: 0.340 ms
+ Execution Time: 0.063 ms
+
+=== R3 run 3 ===
+Nested Loop  (cost=0.00..3.32 rows=1 width=73) (actual time=0.009..0.012 rows=1.00 loops=1)
+   Buffers: shared hit=2
+   ->  Seq Scan on users u  (cost=0.00..1.65 rows=1 width=23) (actual time=0.003..0.004 rows=1.00 loops=1)
+         Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+         Rows Removed by Filter: 51
+         Buffers: shared hit=1
+   ->  Seq Scan on cognitive_baselines cb  (cost=0.00..1.65 rows=1 width=34) (actual time=0.001..0.003 rows=1.00 loops=1)
+         Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+         Rows Removed by Filter: 51
+         Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=146
+ Planning Time: 0.290 ms
+ Execution Time: 0.059 ms

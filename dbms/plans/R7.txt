@@ -1,0 +1,125 @@
+=== R7 run 1 ===
+Limit  (cost=41.08..41.09 rows=7 width=285) (actual time=0.075..0.076 rows=15.00 loops=1)
+   Buffers: shared hit=40
+   ->  Sort  (cost=41.08..41.09 rows=7 width=285) (actual time=0.075..0.075 rows=15.00 loops=1)
+         Sort Key: (CASE WHEN ((cp.retention_state)::text = 'RELEARNING'::text) THEN 1 WHEN ((cp.retention_state)::text = 'LEARNING'::text) THEN 2 WHEN ((cp.retention_state IS NULL) OR ((cp.retention_state)::text = 'NEW'::text)) THEN 3 ELSE 4 END), cp.next_review_due NULLS FIRST, c.card_difficulty DESC
+         Sort Method: quicksort  Memory: 29kB
+         Buffers: shared hit=40
+         ->  Nested Loop  (cost=26.21..40.98 rows=7 width=285) (actual time=0.038..0.060 rows=15.00 loops=1)
+               Buffers: shared hit=31
+               ->  Seq Scan on decks d  (cost=0.00..1.44 rows=1 width=16) (actual time=0.002..0.004 rows=1.00 loops=1)
+                     Filter: (deck_id = '00000000-0000-0000-0000-000000001001'::uuid)
+                     Rows Removed by Filter: 34
+                     Buffers: shared hit=1
+               ->  Hash Right Join  (cost=26.21..39.42 rows=7 width=231) (actual time=0.034..0.053 rows=15.00 loops=1)
+                     Hash Cond: (cp.card_id = c.card_id)
+                     Filter: ((cp.next_review_due IS NULL) OR (cp.next_review_due <= CURRENT_TIMESTAMP))
+                     Rows Removed by Filter: 1
+                     Buffers: shared hit=30
+                     ->  Bitmap Heap Scan on card_progress cp  (cost=4.89..17.89 rows=80 width=46) (actual time=0.009..0.022 rows=80.00 loops=1)
+                           Recheck Cond: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                           Heap Blocks: exact=12
+                           Buffers: shared hit=14
+                           ->  Bitmap Index Scan on idx_card_progress_due_queue  (cost=0.00..4.88 rows=80 width=0) (actual time=0.005..0.005 rows=80.00 loops=1)
+                                 Index Cond: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                                 Index Searches: 1
+                                 Buffers: shared hit=2
+                     ->  Hash  (cost=21.11..21.11 rows=16 width=201) (actual time=0.020..0.020 rows=16.00 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                           Buffers: shared hit=16
+                           ->  Bitmap Heap Scan on cards c  (cost=4.27..21.11 rows=16 width=201) (actual time=0.006..0.017 rows=16.00 loops=1)
+                                 Recheck Cond: (deck_id = '00000000-0000-0000-0000-000000001001'::uuid)
+                                 Heap Blocks: exact=15
+                                 Buffers: shared hit=16
+                                 ->  Bitmap Index Scan on idx_cards_deck_id  (cost=0.00..4.27 rows=16 width=0) (actual time=0.003..0.003 rows=16.00 loops=1)
+                                       Index Cond: (deck_id = '00000000-0000-0000-0000-000000001001'::uuid)
+                                       Index Searches: 1
+                                       Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=367
+ Planning Time: 0.565 ms
+ Execution Time: 0.100 ms
+
+=== R7 run 2 ===
+Limit  (cost=41.08..41.09 rows=7 width=285) (actual time=0.086..0.088 rows=15.00 loops=1)
+   Buffers: shared hit=40
+   ->  Sort  (cost=41.08..41.09 rows=7 width=285) (actual time=0.086..0.086 rows=15.00 loops=1)
+         Sort Key: (CASE WHEN ((cp.retention_state)::text = 'RELEARNING'::text) THEN 1 WHEN ((cp.retention_state)::text = 'LEARNING'::text) THEN 2 WHEN ((cp.retention_state IS NULL) OR ((cp.retention_state)::text = 'NEW'::text)) THEN 3 ELSE 4 END), cp.next_review_due NULLS FIRST, c.card_difficulty DESC
+         Sort Method: quicksort  Memory: 29kB
+         Buffers: shared hit=40
+         ->  Nested Loop  (cost=26.21..40.98 rows=7 width=285) (actual time=0.044..0.069 rows=15.00 loops=1)
+               Buffers: shared hit=31
+               ->  Seq Scan on decks d  (cost=0.00..1.44 rows=1 width=16) (actual time=0.003..0.005 rows=1.00 loops=1)
+                     Filter: (deck_id = '00000000-0000-0000-0000-000000001001'::uuid)
+                     Rows Removed by Filter: 34
+                     Buffers: shared hit=1
+               ->  Hash Right Join  (cost=26.21..39.42 rows=7 width=231) (actual time=0.040..0.062 rows=15.00 loops=1)
+                     Hash Cond: (cp.card_id = c.card_id)
+                     Filter: ((cp.next_review_due IS NULL) OR (cp.next_review_due <= CURRENT_TIMESTAMP))
+                     Rows Removed by Filter: 1
+                     Buffers: shared hit=30
+                     ->  Bitmap Heap Scan on card_progress cp  (cost=4.89..17.89 rows=80 width=46) (actual time=0.010..0.026 rows=80.00 loops=1)
+                           Recheck Cond: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                           Heap Blocks: exact=12
+                           Buffers: shared hit=14
+                           ->  Bitmap Index Scan on idx_card_progress_due_queue  (cost=0.00..4.88 rows=80 width=0) (actual time=0.006..0.006 rows=80.00 loops=1)
+                                 Index Cond: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                                 Index Searches: 1
+                                 Buffers: shared hit=2
+                     ->  Hash  (cost=21.11..21.11 rows=16 width=201) (actual time=0.024..0.024 rows=16.00 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                           Buffers: shared hit=16
+                           ->  Bitmap Heap Scan on cards c  (cost=4.27..21.11 rows=16 width=201) (actual time=0.007..0.021 rows=16.00 loops=1)
+                                 Recheck Cond: (deck_id = '00000000-0000-0000-0000-000000001001'::uuid)
+                                 Heap Blocks: exact=15
+                                 Buffers: shared hit=16
+                                 ->  Bitmap Index Scan on idx_cards_deck_id  (cost=0.00..4.27 rows=16 width=0) (actual time=0.004..0.004 rows=16.00 loops=1)
+                                       Index Cond: (deck_id = '00000000-0000-0000-0000-000000001001'::uuid)
+                                       Index Searches: 1
+                                       Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=367
+ Planning Time: 0.824 ms
+ Execution Time: 0.115 ms
+
+=== R7 run 3 ===
+Limit  (cost=41.08..41.09 rows=7 width=285) (actual time=0.077..0.078 rows=15.00 loops=1)
+   Buffers: shared hit=40
+   ->  Sort  (cost=41.08..41.09 rows=7 width=285) (actual time=0.076..0.077 rows=15.00 loops=1)
+         Sort Key: (CASE WHEN ((cp.retention_state)::text = 'RELEARNING'::text) THEN 1 WHEN ((cp.retention_state)::text = 'LEARNING'::text) THEN 2 WHEN ((cp.retention_state IS NULL) OR ((cp.retention_state)::text = 'NEW'::text)) THEN 3 ELSE 4 END), cp.next_review_due NULLS FIRST, c.card_difficulty DESC
+         Sort Method: quicksort  Memory: 29kB
+         Buffers: shared hit=40
+         ->  Nested Loop  (cost=26.21..40.98 rows=7 width=285) (actual time=0.038..0.062 rows=15.00 loops=1)
+               Buffers: shared hit=31
+               ->  Seq Scan on decks d  (cost=0.00..1.44 rows=1 width=16) (actual time=0.002..0.004 rows=1.00 loops=1)
+                     Filter: (deck_id = '00000000-0000-0000-0000-000000001001'::uuid)
+                     Rows Removed by Filter: 34
+                     Buffers: shared hit=1
+               ->  Hash Right Join  (cost=26.21..39.42 rows=7 width=231) (actual time=0.034..0.055 rows=15.00 loops=1)
+                     Hash Cond: (cp.card_id = c.card_id)
+                     Filter: ((cp.next_review_due IS NULL) OR (cp.next_review_due <= CURRENT_TIMESTAMP))
+                     Rows Removed by Filter: 1
+                     Buffers: shared hit=30
+                     ->  Bitmap Heap Scan on card_progress cp  (cost=4.89..17.89 rows=80 width=46) (actual time=0.008..0.022 rows=80.00 loops=1)
+                           Recheck Cond: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                           Heap Blocks: exact=12
+                           Buffers: shared hit=14
+                           ->  Bitmap Index Scan on idx_card_progress_due_queue  (cost=0.00..4.88 rows=80 width=0) (actual time=0.005..0.005 rows=80.00 loops=1)
+                                 Index Cond: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                                 Index Searches: 1
+                                 Buffers: shared hit=2
+                     ->  Hash  (cost=21.11..21.11 rows=16 width=201) (actual time=0.021..0.021 rows=16.00 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 12kB
+                           Buffers: shared hit=16
+                           ->  Bitmap Heap Scan on cards c  (cost=4.27..21.11 rows=16 width=201) (actual time=0.006..0.018 rows=16.00 loops=1)
+                                 Recheck Cond: (deck_id = '00000000-0000-0000-0000-000000001001'::uuid)
+                                 Heap Blocks: exact=15
+                                 Buffers: shared hit=16
+                                 ->  Bitmap Index Scan on idx_cards_deck_id  (cost=0.00..4.27 rows=16 width=0) (actual time=0.004..0.004 rows=16.00 loops=1)
+                                       Index Cond: (deck_id = '00000000-0000-0000-0000-000000001001'::uuid)
+                                       Index Searches: 1
+                                       Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=367
+ Planning Time: 0.595 ms
+ Execution Time: 0.103 ms

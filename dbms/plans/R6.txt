@@ -1,0 +1,95 @@
+=== R6 run 1 ===
+GroupAggregate  (cost=52.79..53.19 rows=20 width=130) (actual time=0.030..0.031 rows=0.00 loops=1)
+   Group Key: s.session_id, d.deck_title
+   Buffers: shared hit=10
+   ->  Sort  (cost=52.79..52.84 rows=20 width=138) (actual time=0.030..0.030 rows=0.00 loops=1)
+         Sort Key: s.session_id, d.deck_title
+         Sort Method: quicksort  Memory: 25kB
+         Buffers: shared hit=10
+         ->  Hash Join  (cost=6.66..52.36 rows=20 width=138) (actual time=0.017..0.018 rows=0.00 loops=1)
+               Hash Cond: (s.deck_id = d.deck_id)
+               Buffers: shared hit=4
+               ->  Nested Loop Left Join  (cost=4.88..50.51 rows=20 width=100) (actual time=0.007..0.008 rows=0.00 loops=1)
+                     Buffers: shared hit=3
+                     ->  Seq Scan on study_sessions s  (cost=0.00..4.90 rows=1 width=84) (actual time=0.007..0.007 rows=0.00 loops=1)
+                           Filter: ((session_end IS NULL) AND (user_id = '00000000-0000-0000-0000-000000000001'::uuid))
+                           Rows Removed by Filter: 152
+                           Buffers: shared hit=3
+                     ->  Bitmap Heap Scan on review_logs r  (cost=4.88..44.84 rows=77 width=32) (never executed)
+                           Recheck Cond: (s.session_id = session_id)
+                           ->  Bitmap Index Scan on idx_review_logs_session_id  (cost=0.00..4.86 rows=77 width=0) (never executed)
+                                 Index Cond: (session_id = s.session_id)
+                                 Index Searches: 0
+               ->  Hash  (cost=1.35..1.35 rows=35 width=54) (actual time=0.007..0.007 rows=35.00 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                     Buffers: shared hit=1
+                     ->  Seq Scan on decks d  (cost=0.00..1.35 rows=35 width=54) (actual time=0.002..0.003 rows=35.00 loops=1)
+                           Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=264
+ Planning Time: 0.579 ms
+ Execution Time: 0.068 ms
+
+=== R6 run 2 ===
+GroupAggregate  (cost=52.79..53.19 rows=20 width=130) (actual time=0.030..0.030 rows=0.00 loops=1)
+   Group Key: s.session_id, d.deck_title
+   Buffers: shared hit=10
+   ->  Sort  (cost=52.79..52.84 rows=20 width=138) (actual time=0.029..0.030 rows=0.00 loops=1)
+         Sort Key: s.session_id, d.deck_title
+         Sort Method: quicksort  Memory: 25kB
+         Buffers: shared hit=10
+         ->  Hash Join  (cost=6.66..52.36 rows=20 width=138) (actual time=0.018..0.018 rows=0.00 loops=1)
+               Hash Cond: (s.deck_id = d.deck_id)
+               Buffers: shared hit=4
+               ->  Nested Loop Left Join  (cost=4.88..50.51 rows=20 width=100) (actual time=0.008..0.008 rows=0.00 loops=1)
+                     Buffers: shared hit=3
+                     ->  Seq Scan on study_sessions s  (cost=0.00..4.90 rows=1 width=84) (actual time=0.008..0.008 rows=0.00 loops=1)
+                           Filter: ((session_end IS NULL) AND (user_id = '00000000-0000-0000-0000-000000000001'::uuid))
+                           Rows Removed by Filter: 152
+                           Buffers: shared hit=3
+                     ->  Bitmap Heap Scan on review_logs r  (cost=4.88..44.84 rows=77 width=32) (never executed)
+                           Recheck Cond: (s.session_id = session_id)
+                           ->  Bitmap Index Scan on idx_review_logs_session_id  (cost=0.00..4.86 rows=77 width=0) (never executed)
+                                 Index Cond: (session_id = s.session_id)
+                                 Index Searches: 0
+               ->  Hash  (cost=1.35..1.35 rows=35 width=54) (actual time=0.007..0.007 rows=35.00 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                     Buffers: shared hit=1
+                     ->  Seq Scan on decks d  (cost=0.00..1.35 rows=35 width=54) (actual time=0.002..0.003 rows=35.00 loops=1)
+                           Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=264
+ Planning Time: 0.515 ms
+ Execution Time: 0.067 ms
+
+=== R6 run 3 ===
+GroupAggregate  (cost=52.79..53.19 rows=20 width=130) (actual time=0.028..0.028 rows=0.00 loops=1)
+   Group Key: s.session_id, d.deck_title
+   Buffers: shared hit=10
+   ->  Sort  (cost=52.79..52.84 rows=20 width=138) (actual time=0.027..0.028 rows=0.00 loops=1)
+         Sort Key: s.session_id, d.deck_title
+         Sort Method: quicksort  Memory: 25kB
+         Buffers: shared hit=10
+         ->  Hash Join  (cost=6.66..52.36 rows=20 width=138) (actual time=0.017..0.017 rows=0.00 loops=1)
+               Hash Cond: (s.deck_id = d.deck_id)
+               Buffers: shared hit=4
+               ->  Nested Loop Left Join  (cost=4.88..50.51 rows=20 width=100) (actual time=0.007..0.007 rows=0.00 loops=1)
+                     Buffers: shared hit=3
+                     ->  Seq Scan on study_sessions s  (cost=0.00..4.90 rows=1 width=84) (actual time=0.007..0.007 rows=0.00 loops=1)
+                           Filter: ((session_end IS NULL) AND (user_id = '00000000-0000-0000-0000-000000000001'::uuid))
+                           Rows Removed by Filter: 152
+                           Buffers: shared hit=3
+                     ->  Bitmap Heap Scan on review_logs r  (cost=4.88..44.84 rows=77 width=32) (never executed)
+                           Recheck Cond: (s.session_id = session_id)
+                           ->  Bitmap Index Scan on idx_review_logs_session_id  (cost=0.00..4.86 rows=77 width=0) (never executed)
+                                 Index Cond: (session_id = s.session_id)
+                                 Index Searches: 0
+               ->  Hash  (cost=1.35..1.35 rows=35 width=54) (actual time=0.007..0.007 rows=35.00 loops=1)
+                     Buckets: 1024  Batches: 1  Memory Usage: 11kB
+                     Buffers: shared hit=1
+                     ->  Seq Scan on decks d  (cost=0.00..1.35 rows=35 width=54) (actual time=0.002..0.003 rows=35.00 loops=1)
+                           Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=264
+ Planning Time: 0.506 ms
+ Execution Time: 0.064 ms

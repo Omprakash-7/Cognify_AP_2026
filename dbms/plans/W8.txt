@@ -1,0 +1,29 @@
+=== W8 run 1 ===
+Insert on card_media  (cost=0.00..0.01 rows=0 width=0) (actual time=0.143..0.144 rows=0.00 loops=1)
+   Buffers: shared hit=46
+   ->  Result  (cost=0.00..0.01 rows=1 width=678) (actual time=0.001..0.001 rows=1.00 loops=1)
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.034 ms
+ Trigger for constraint fk_card_media_card_id: time=0.270 calls=1
+ Execution Time: 0.422 ms
+
+=== W8 run 2 ===
+Insert on card_media  (cost=0.00..0.01 rows=0 width=0) (actual time=0.115..0.115 rows=0.00 loops=1)
+   Buffers: shared hit=46
+   ->  Result  (cost=0.00..0.01 rows=1 width=678) (actual time=0.001..0.001 rows=1.00 loops=1)
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.034 ms
+ Trigger for constraint fk_card_media_card_id: time=0.252 calls=1
+ Execution Time: 0.376 ms
+
+=== W8 run 3 ===
+Insert on card_media  (cost=0.00..0.01 rows=0 width=0) (actual time=0.104..0.104 rows=0.00 loops=1)
+   Buffers: shared hit=46
+   ->  Result  (cost=0.00..0.01 rows=1 width=678) (actual time=0.001..0.001 rows=1.00 loops=1)
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.035 ms
+ Trigger for constraint fk_card_media_card_id: time=0.236 calls=1
+ Execution Time: 0.349 ms

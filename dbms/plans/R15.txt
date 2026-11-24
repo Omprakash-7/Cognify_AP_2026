@@ -1,0 +1,71 @@
+=== R15 run 1 ===
+Limit  (cost=8.42..8.44 rows=9 width=129) (actual time=0.024..0.024 rows=9.00 loops=1)
+   Buffers: shared hit=8
+   ->  Sort  (cost=8.42..8.44 rows=9 width=129) (actual time=0.023..0.024 rows=9.00 loops=1)
+         Sort Key: al.created_at DESC
+         Sort Method: quicksort  Memory: 26kB
+         Buffers: shared hit=8
+         ->  Nested Loop Left Join  (cost=0.00..8.28 rows=9 width=129) (actual time=0.009..0.016 rows=9.00 loops=1)
+               Buffers: shared hit=5
+               ->  Seq Scan on audit_logs al  (cost=0.00..6.51 rows=9 width=97) (actual time=0.003..0.010 rows=9.00 loops=1)
+                     Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                     Rows Removed by Filter: 192
+                     Buffers: shared hit=4
+               ->  Materialize  (cost=0.00..1.65 rows=1 width=23) (actual time=0.000..0.000 rows=1.00 loops=9)
+                     Storage: Memory  Maximum Storage: 17kB
+                     Buffers: shared hit=1
+                     ->  Seq Scan on users u  (cost=0.00..1.65 rows=1 width=23) (actual time=0.003..0.003 rows=1.00 loops=1)
+                           Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                           Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=268
+ Planning Time: 0.398 ms
+ Execution Time: 0.038 ms
+
+=== R15 run 2 ===
+Limit  (cost=8.42..8.44 rows=9 width=129) (actual time=0.023..0.023 rows=9.00 loops=1)
+   Buffers: shared hit=8
+   ->  Sort  (cost=8.42..8.44 rows=9 width=129) (actual time=0.022..0.023 rows=9.00 loops=1)
+         Sort Key: al.created_at DESC
+         Sort Method: quicksort  Memory: 26kB
+         Buffers: shared hit=8
+         ->  Nested Loop Left Join  (cost=0.00..8.28 rows=9 width=129) (actual time=0.009..0.016 rows=9.00 loops=1)
+               Buffers: shared hit=5
+               ->  Seq Scan on audit_logs al  (cost=0.00..6.51 rows=9 width=97) (actual time=0.003..0.009 rows=9.00 loops=1)
+                     Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                     Rows Removed by Filter: 192
+                     Buffers: shared hit=4
+               ->  Materialize  (cost=0.00..1.65 rows=1 width=23) (actual time=0.000..0.000 rows=1.00 loops=9)
+                     Storage: Memory  Maximum Storage: 17kB
+                     Buffers: shared hit=1
+                     ->  Seq Scan on users u  (cost=0.00..1.65 rows=1 width=23) (actual time=0.002..0.002 rows=1.00 loops=1)
+                           Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                           Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=268
+ Planning Time: 0.455 ms
+ Execution Time: 0.037 ms
+
+=== R15 run 3 ===
+Limit  (cost=8.42..8.44 rows=9 width=129) (actual time=0.024..0.025 rows=9.00 loops=1)
+   Buffers: shared hit=8
+   ->  Sort  (cost=8.42..8.44 rows=9 width=129) (actual time=0.024..0.024 rows=9.00 loops=1)
+         Sort Key: al.created_at DESC
+         Sort Method: quicksort  Memory: 26kB
+         Buffers: shared hit=8
+         ->  Nested Loop Left Join  (cost=0.00..8.28 rows=9 width=129) (actual time=0.008..0.016 rows=9.00 loops=1)
+               Buffers: shared hit=5
+               ->  Seq Scan on audit_logs al  (cost=0.00..6.51 rows=9 width=97) (actual time=0.003..0.010 rows=9.00 loops=1)
+                     Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                     Rows Removed by Filter: 192
+                     Buffers: shared hit=4
+               ->  Materialize  (cost=0.00..1.65 rows=1 width=23) (actual time=0.000..0.000 rows=1.00 loops=9)
+                     Storage: Memory  Maximum Storage: 17kB
+                     Buffers: shared hit=1
+                     ->  Seq Scan on users u  (cost=0.00..1.65 rows=1 width=23) (actual time=0.002..0.002 rows=1.00 loops=1)
+                           Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+                           Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=268
+ Planning Time: 0.370 ms
+ Execution Time: 0.039 ms

@@ -1,0 +1,38 @@
+=== W6 run 1 ===
+Insert on decks  (cost=0.00..0.01 rows=0 width=0) (actual time=0.114..0.114 rows=0.00 loops=1)
+   Conflict Resolution: UPDATE
+   Conflict Arbiter Indexes: uq_deck_owner_slug
+   Tuples Inserted: 0
+   Conflicting Tuples: 1
+   Buffers: shared hit=41
+   ->  Result  (cost=0.00..0.01 rows=1 width=810) (actual time=0.002..0.002 rows=1.00 loops=1)
+ Planning:
+   Buffers: shared hit=60
+ Planning Time: 0.063 ms
+ Execution Time: 0.162 ms
+
+=== W6 run 2 ===
+Insert on decks  (cost=0.00..0.01 rows=0 width=0) (actual time=0.089..0.089 rows=0.00 loops=1)
+   Conflict Resolution: UPDATE
+   Conflict Arbiter Indexes: uq_deck_owner_slug
+   Tuples Inserted: 0
+   Conflicting Tuples: 1
+   Buffers: shared hit=39
+   ->  Result  (cost=0.00..0.01 rows=1 width=810) (actual time=0.002..0.002 rows=1.00 loops=1)
+ Planning:
+   Buffers: shared hit=60
+ Planning Time: 0.062 ms
+ Execution Time: 0.134 ms
+
+=== W6 run 3 ===
+Insert on decks  (cost=0.00..0.01 rows=0 width=0) (actual time=0.079..0.079 rows=0.00 loops=1)
+   Conflict Resolution: UPDATE
+   Conflict Arbiter Indexes: uq_deck_owner_slug
+   Tuples Inserted: 0
+   Conflicting Tuples: 1
+   Buffers: shared hit=39
+   ->  Result  (cost=0.00..0.01 rows=1 width=810) (actual time=0.001..0.002 rows=1.00 loops=1)
+ Planning:
+   Buffers: shared hit=60
+ Planning Time: 0.067 ms
+ Execution Time: 0.128 ms

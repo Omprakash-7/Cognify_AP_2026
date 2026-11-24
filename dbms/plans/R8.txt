@@ -1,0 +1,71 @@
+=== R8 run 1 ===
+Nested Loop Left Join  (cost=8.30..11.43 rows=2 width=322) (actual time=0.018..0.023 rows=2.00 loops=1)
+   Buffers: shared hit=5
+   ->  Hash Join  (cost=8.30..9.76 rows=1 width=239) (actual time=0.016..0.019 rows=1.00 loops=1)
+         Hash Cond: (d.deck_id = c.deck_id)
+         Buffers: shared hit=4
+         ->  Seq Scan on decks d  (cost=0.00..1.35 rows=35 width=54) (actual time=0.002..0.003 rows=35.00 loops=1)
+               Buffers: shared hit=1
+         ->  Hash  (cost=8.29..8.29 rows=1 width=201) (actual time=0.009..0.009 rows=1.00 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               Buffers: shared hit=3
+               ->  Index Scan using cards_pkey on cards c  (cost=0.28..8.29 rows=1 width=201) (actual time=0.007..0.007 rows=1.00 loops=1)
+                     Index Cond: (card_id = '00000000-0000-0000-0000-000000002001'::uuid)
+                     Index Searches: 1
+                     Buffers: shared hit=3
+   ->  Seq Scan on card_media m  (cost=0.00..1.65 rows=2 width=99) (actual time=0.001..0.003 rows=2.00 loops=1)
+         Filter: (card_id = '00000000-0000-0000-0000-000000002001'::uuid)
+         Rows Removed by Filter: 50
+         Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=296
+ Planning Time: 0.525 ms
+ Execution Time: 0.054 ms
+
+=== R8 run 2 ===
+Nested Loop Left Join  (cost=8.30..11.43 rows=2 width=322) (actual time=0.014..0.018 rows=2.00 loops=1)
+   Buffers: shared hit=5
+   ->  Hash Join  (cost=8.30..9.76 rows=1 width=239) (actual time=0.012..0.014 rows=1.00 loops=1)
+         Hash Cond: (d.deck_id = c.deck_id)
+         Buffers: shared hit=4
+         ->  Seq Scan on decks d  (cost=0.00..1.35 rows=35 width=54) (actual time=0.002..0.003 rows=35.00 loops=1)
+               Buffers: shared hit=1
+         ->  Hash  (cost=8.29..8.29 rows=1 width=201) (actual time=0.006..0.006 rows=1.00 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               Buffers: shared hit=3
+               ->  Index Scan using cards_pkey on cards c  (cost=0.28..8.29 rows=1 width=201) (actual time=0.005..0.005 rows=1.00 loops=1)
+                     Index Cond: (card_id = '00000000-0000-0000-0000-000000002001'::uuid)
+                     Index Searches: 1
+                     Buffers: shared hit=3
+   ->  Seq Scan on card_media m  (cost=0.00..1.65 rows=2 width=99) (actual time=0.001..0.003 rows=2.00 loops=1)
+         Filter: (card_id = '00000000-0000-0000-0000-000000002001'::uuid)
+         Rows Removed by Filter: 50
+         Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=296
+ Planning Time: 0.500 ms
+ Execution Time: 0.043 ms
+
+=== R8 run 3 ===
+Nested Loop Left Join  (cost=8.30..11.43 rows=2 width=322) (actual time=0.017..0.021 rows=2.00 loops=1)
+   Buffers: shared hit=5
+   ->  Hash Join  (cost=8.30..9.76 rows=1 width=239) (actual time=0.014..0.017 rows=1.00 loops=1)
+         Hash Cond: (d.deck_id = c.deck_id)
+         Buffers: shared hit=4
+         ->  Seq Scan on decks d  (cost=0.00..1.35 rows=35 width=54) (actual time=0.003..0.003 rows=35.00 loops=1)
+               Buffers: shared hit=1
+         ->  Hash  (cost=8.29..8.29 rows=1 width=201) (actual time=0.008..0.008 rows=1.00 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               Buffers: shared hit=3
+               ->  Index Scan using cards_pkey on cards c  (cost=0.28..8.29 rows=1 width=201) (actual time=0.006..0.006 rows=1.00 loops=1)
+                     Index Cond: (card_id = '00000000-0000-0000-0000-000000002001'::uuid)
+                     Index Searches: 1
+                     Buffers: shared hit=3
+   ->  Seq Scan on card_media m  (cost=0.00..1.65 rows=2 width=99) (actual time=0.002..0.003 rows=2.00 loops=1)
+         Filter: (card_id = '00000000-0000-0000-0000-000000002001'::uuid)
+         Rows Removed by Filter: 50
+         Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=296
+ Planning Time: 0.734 ms
+ Execution Time: 0.050 ms

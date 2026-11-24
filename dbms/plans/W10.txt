@@ -1,0 +1,32 @@
+=== W10 run 1 ===
+Insert on review_logs  (cost=0.00..0.01 rows=0 width=0) (actual time=0.161..0.161 rows=0.00 loops=1)
+   Buffers: shared hit=100
+   ->  Result  (cost=0.00..0.01 rows=1 width=63) (actual time=0.001..0.001 rows=1.00 loops=1)
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.032 ms
+ Trigger for constraint fk_reviews_session_id: time=0.221 calls=1
+ Trigger for constraint fk_reviews_card_id: time=0.146 calls=1
+ Execution Time: 0.539 ms
+
+=== W10 run 2 ===
+Insert on review_logs  (cost=0.00..0.01 rows=0 width=0) (actual time=0.134..0.135 rows=0.00 loops=1)
+   Buffers: shared hit=100
+   ->  Result  (cost=0.00..0.01 rows=1 width=63) (actual time=0.000..0.000 rows=1.00 loops=1)
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.032 ms
+ Trigger for constraint fk_reviews_session_id: time=0.233 calls=1
+ Trigger for constraint fk_reviews_card_id: time=0.147 calls=1
+ Execution Time: 0.525 ms
+
+=== W10 run 3 ===
+Insert on review_logs  (cost=0.00..0.01 rows=0 width=0) (actual time=0.126..0.127 rows=0.00 loops=1)
+   Buffers: shared hit=100
+   ->  Result  (cost=0.00..0.01 rows=1 width=63) (actual time=0.001..0.001 rows=1.00 loops=1)
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.032 ms
+ Trigger for constraint fk_reviews_session_id: time=0.207 calls=1
+ Trigger for constraint fk_reviews_card_id: time=0.121 calls=1
+ Execution Time: 0.464 ms

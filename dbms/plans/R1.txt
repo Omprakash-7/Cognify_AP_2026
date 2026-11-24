@@ -1,0 +1,116 @@
+=== R1 run 1 ===
+GroupAggregate  (cost=5.89..5.95 rows=2 width=408) (actual time=0.170..0.171 rows=1.00 loops=1)
+   Group Key: u.email, c.password_hash, c.salt, c.mfa_secret
+   Buffers: shared hit=10
+   ->  Sort  (cost=5.89..5.90 rows=2 width=383) (actual time=0.142..0.144 rows=2.00 loops=1)
+         Sort Key: u.email, c.password_hash, c.salt, c.mfa_secret, r.role_name
+         Sort Method: quicksort  Memory: 25kB
+         Buffers: shared hit=10
+         ->  Nested Loop Left Join  (cost=3.65..5.88 rows=2 width=383) (actual time=0.107..0.112 rows=2.00 loops=1)
+               Buffers: shared hit=7
+               ->  Hash Join  (cost=3.52..5.26 rows=2 width=392) (actual time=0.104..0.108 rows=2.00 loops=1)
+                     Hash Cond: (c.user_id = u.user_id)
+                     Buffers: shared hit=3
+                     ->  Seq Scan on user_credentials c  (cost=0.00..1.52 rows=52 width=347) (actual time=0.005..0.006 rows=52.00 loops=1)
+                           Buffers: shared hit=1
+                     ->  Hash  (cost=3.50..3.50 rows=2 width=61) (actual time=0.093..0.094 rows=2.00 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                           Buffers: shared hit=2
+                           ->  Hash Right Join  (cost=1.80..3.50 rows=2 width=61) (actual time=0.085..0.092 rows=2.00 loops=1)
+                                 Hash Cond: (ur.user_id = u.user_id)
+                                 Buffers: shared hit=2
+                                 ->  Seq Scan on user_roles ur  (cost=0.00..1.54 rows=54 width=32) (actual time=0.002..0.003 rows=54.00 loops=1)
+                                       Buffers: shared hit=1
+                                 ->  Hash  (cost=1.78..1.78 rows=2 width=45) (actual time=0.013..0.013 rows=1.00 loops=1)
+                                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                       Buffers: shared hit=1
+                                       ->  Seq Scan on users u  (cost=0.00..1.78 rows=2 width=45) (actual time=0.007..0.010 rows=1.00 loops=1)
+                                             Filter: (is_active AND (((email)::text = 'alex.smith@cognify.io'::text) OR ((username)::text = 'alexsmith'::text)))
+                                             Rows Removed by Filter: 51
+                                             Buffers: shared hit=1
+               ->  Index Scan using roles_pkey on roles r  (cost=0.13..0.37 rows=1 width=23) (actual time=0.001..0.001 rows=1.00 loops=2)
+                     Index Cond: (role_id = ur.role_id)
+                     Index Searches: 2
+                     Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=290 read=1
+ Planning Time: 1.339 ms
+ Execution Time: 0.224 ms
+
+=== R1 run 2 ===
+GroupAggregate  (cost=5.89..5.95 rows=2 width=408) (actual time=0.070..0.071 rows=1.00 loops=1)
+   Group Key: u.email, c.password_hash, c.salt, c.mfa_secret
+   Buffers: shared hit=10
+   ->  Sort  (cost=5.89..5.90 rows=2 width=383) (actual time=0.065..0.066 rows=2.00 loops=1)
+         Sort Key: u.email, c.password_hash, c.salt, c.mfa_secret, r.role_name
+         Sort Method: quicksort  Memory: 25kB
+         Buffers: shared hit=10
+         ->  Nested Loop Left Join  (cost=3.65..5.88 rows=2 width=383) (actual time=0.033..0.039 rows=2.00 loops=1)
+               Buffers: shared hit=7
+               ->  Hash Join  (cost=3.52..5.26 rows=2 width=392) (actual time=0.031..0.036 rows=2.00 loops=1)
+                     Hash Cond: (c.user_id = u.user_id)
+                     Buffers: shared hit=3
+                     ->  Seq Scan on user_credentials c  (cost=0.00..1.52 rows=52 width=347) (actual time=0.004..0.005 rows=52.00 loops=1)
+                           Buffers: shared hit=1
+                     ->  Hash  (cost=3.50..3.50 rows=2 width=61) (actual time=0.023..0.023 rows=2.00 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                           Buffers: shared hit=2
+                           ->  Hash Right Join  (cost=1.80..3.50 rows=2 width=61) (actual time=0.015..0.021 rows=2.00 loops=1)
+                                 Hash Cond: (ur.user_id = u.user_id)
+                                 Buffers: shared hit=2
+                                 ->  Seq Scan on user_roles ur  (cost=0.00..1.54 rows=54 width=32) (actual time=0.001..0.002 rows=54.00 loops=1)
+                                       Buffers: shared hit=1
+                                 ->  Hash  (cost=1.78..1.78 rows=2 width=45) (actual time=0.010..0.010 rows=1.00 loops=1)
+                                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                       Buffers: shared hit=1
+                                       ->  Seq Scan on users u  (cost=0.00..1.78 rows=2 width=45) (actual time=0.005..0.008 rows=1.00 loops=1)
+                                             Filter: (is_active AND (((email)::text = 'alex.smith@cognify.io'::text) OR ((username)::text = 'alexsmith'::text)))
+                                             Rows Removed by Filter: 51
+                                             Buffers: shared hit=1
+               ->  Index Scan using roles_pkey on roles r  (cost=0.13..0.37 rows=1 width=23) (actual time=0.001..0.001 rows=1.00 loops=2)
+                     Index Cond: (role_id = ur.role_id)
+                     Index Searches: 2
+                     Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=296
+ Planning Time: 0.844 ms
+ Execution Time: 0.123 ms
+
+=== R1 run 3 ===
+GroupAggregate  (cost=5.89..5.95 rows=2 width=408) (actual time=0.077..0.078 rows=1.00 loops=1)
+   Group Key: u.email, c.password_hash, c.salt, c.mfa_secret
+   Buffers: shared hit=10
+   ->  Sort  (cost=5.89..5.90 rows=2 width=383) (actual time=0.072..0.073 rows=2.00 loops=1)
+         Sort Key: u.email, c.password_hash, c.salt, c.mfa_secret, r.role_name
+         Sort Method: quicksort  Memory: 25kB
+         Buffers: shared hit=10
+         ->  Nested Loop Left Join  (cost=3.65..5.88 rows=2 width=383) (actual time=0.044..0.048 rows=2.00 loops=1)
+               Buffers: shared hit=7
+               ->  Hash Join  (cost=3.52..5.26 rows=2 width=392) (actual time=0.041..0.045 rows=2.00 loops=1)
+                     Hash Cond: (c.user_id = u.user_id)
+                     Buffers: shared hit=3
+                     ->  Seq Scan on user_credentials c  (cost=0.00..1.52 rows=52 width=347) (actual time=0.003..0.005 rows=52.00 loops=1)
+                           Buffers: shared hit=1
+                     ->  Hash  (cost=3.50..3.50 rows=2 width=61) (actual time=0.033..0.034 rows=2.00 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                           Buffers: shared hit=2
+                           ->  Hash Right Join  (cost=1.80..3.50 rows=2 width=61) (actual time=0.026..0.032 rows=2.00 loops=1)
+                                 Hash Cond: (ur.user_id = u.user_id)
+                                 Buffers: shared hit=2
+                                 ->  Seq Scan on user_roles ur  (cost=0.00..1.54 rows=54 width=32) (actual time=0.001..0.002 rows=54.00 loops=1)
+                                       Buffers: shared hit=1
+                                 ->  Hash  (cost=1.78..1.78 rows=2 width=45) (actual time=0.021..0.021 rows=1.00 loops=1)
+                                       Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                                       Buffers: shared hit=1
+                                       ->  Seq Scan on users u  (cost=0.00..1.78 rows=2 width=45) (actual time=0.016..0.019 rows=1.00 loops=1)
+                                             Filter: (is_active AND (((email)::text = 'alex.smith@cognify.io'::text) OR ((username)::text = 'alexsmith'::text)))
+                                             Rows Removed by Filter: 51
+                                             Buffers: shared hit=1
+               ->  Index Scan using roles_pkey on roles r  (cost=0.13..0.37 rows=1 width=23) (actual time=0.001..0.001 rows=1.00 loops=2)
+                     Index Cond: (role_id = ur.role_id)
+                     Index Searches: 2
+                     Buffers: shared hit=4
+ Planning:
+   Buffers: shared hit=296
+ Planning Time: 0.765 ms
+ Execution Time: 0.122 ms

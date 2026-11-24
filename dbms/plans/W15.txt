@@ -1,0 +1,23 @@
+=== W15 run 1 ===
+Insert on audit_logs  (cost=0.00..0.01 rows=0 width=0) (actual time=0.164..0.165 rows=0.00 loops=1)
+   Buffers: shared hit=58
+   ->  Result  (cost=0.00..0.01 rows=1 width=540) (actual time=0.008..0.008 rows=1.00 loops=1)
+ Planning Time: 0.037 ms
+ Trigger for constraint fk_audit_logs_user_id: time=0.480 calls=1
+ Execution Time: 0.655 ms
+
+=== W15 run 2 ===
+Insert on audit_logs  (cost=0.00..0.01 rows=0 width=0) (actual time=0.118..0.118 rows=0.00 loops=1)
+   Buffers: shared hit=57
+   ->  Result  (cost=0.00..0.01 rows=1 width=540) (actual time=0.009..0.009 rows=1.00 loops=1)
+ Planning Time: 0.035 ms
+ Trigger for constraint fk_audit_logs_user_id: time=0.300 calls=1
+ Execution Time: 0.427 ms
+
+=== W15 run 3 ===
+Insert on audit_logs  (cost=0.00..0.01 rows=0 width=0) (actual time=0.126..0.126 rows=0.00 loops=1)
+   Buffers: shared hit=57
+   ->  Result  (cost=0.00..0.01 rows=1 width=540) (actual time=0.007..0.007 rows=1.00 loops=1)
+ Planning Time: 0.036 ms
+ Trigger for constraint fk_audit_logs_user_id: time=0.317 calls=1
+ Execution Time: 0.453 ms

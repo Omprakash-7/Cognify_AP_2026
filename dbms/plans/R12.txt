@@ -1,0 +1,65 @@
+=== R12 run 1 ===
+Sort  (cost=2.39..2.40 rows=2 width=119) (actual time=0.021..0.022 rows=2.00 loops=1)
+   Sort Key: ua.awarded_at DESC
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=5
+   ->  Hash Join  (cost=1.11..2.38 rows=2 width=119) (actual time=0.011..0.012 rows=2.00 loops=1)
+         Hash Cond: (ua.achievement_id = a.achievement_id)
+         Buffers: shared hit=2
+         ->  Seq Scan on user_achievements ua  (cost=0.00..1.26 rows=2 width=24) (actual time=0.003..0.003 rows=2.00 loops=1)
+               Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+               Rows Removed by Filter: 19
+               Buffers: shared hit=1
+         ->  Hash  (cost=1.05..1.05 rows=5 width=111) (actual time=0.005..0.005 rows=5.00 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               Buffers: shared hit=1
+               ->  Seq Scan on achievements a  (cost=0.00..1.05 rows=5 width=111) (actual time=0.003..0.003 rows=5.00 loops=1)
+                     Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=269
+ Planning Time: 0.433 ms
+ Execution Time: 0.044 ms
+
+=== R12 run 2 ===
+Sort  (cost=2.39..2.40 rows=2 width=119) (actual time=0.020..0.020 rows=2.00 loops=1)
+   Sort Key: ua.awarded_at DESC
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=5
+   ->  Hash Join  (cost=1.11..2.38 rows=2 width=119) (actual time=0.010..0.011 rows=2.00 loops=1)
+         Hash Cond: (ua.achievement_id = a.achievement_id)
+         Buffers: shared hit=2
+         ->  Seq Scan on user_achievements ua  (cost=0.00..1.26 rows=2 width=24) (actual time=0.002..0.003 rows=2.00 loops=1)
+               Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+               Rows Removed by Filter: 19
+               Buffers: shared hit=1
+         ->  Hash  (cost=1.05..1.05 rows=5 width=111) (actual time=0.004..0.004 rows=5.00 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               Buffers: shared hit=1
+               ->  Seq Scan on achievements a  (cost=0.00..1.05 rows=5 width=111) (actual time=0.003..0.003 rows=5.00 loops=1)
+                     Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=269
+ Planning Time: 0.359 ms
+ Execution Time: 0.041 ms
+
+=== R12 run 3 ===
+Sort  (cost=2.39..2.40 rows=2 width=119) (actual time=0.063..0.064 rows=2.00 loops=1)
+   Sort Key: ua.awarded_at DESC
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=5
+   ->  Hash Join  (cost=1.11..2.38 rows=2 width=119) (actual time=0.051..0.053 rows=2.00 loops=1)
+         Hash Cond: (ua.achievement_id = a.achievement_id)
+         Buffers: shared hit=2
+         ->  Seq Scan on user_achievements ua  (cost=0.00..1.26 rows=2 width=24) (actual time=0.003..0.004 rows=2.00 loops=1)
+               Filter: (user_id = '00000000-0000-0000-0000-000000000001'::uuid)
+               Rows Removed by Filter: 19
+               Buffers: shared hit=1
+         ->  Hash  (cost=1.05..1.05 rows=5 width=111) (actual time=0.007..0.007 rows=5.00 loops=1)
+               Buckets: 1024  Batches: 1  Memory Usage: 9kB
+               Buffers: shared hit=1
+               ->  Seq Scan on achievements a  (cost=0.00..1.05 rows=5 width=111) (actual time=0.005..0.005 rows=5.00 loops=1)
+                     Buffers: shared hit=1
+ Planning:
+   Buffers: shared hit=269
+ Planning Time: 0.456 ms
+ Execution Time: 0.088 ms
