@@ -217,22 +217,42 @@ WHERE s.session_id = '00000000-0000-0000-0000-000000003001'::uuid
 GROUP BY s.session_id, s.user_id, d.deck_title, s.session_start, s.session_end;
 
 -- R11 -- READ: Global student leaderboard ranked by total earned XP and completed reviews
-SELECT 
-    DENSE_RANK() OVER (ORDER BY COALESCE(SUM(a.xp_value), 0) DESC, COUNT(DISTINCT r.review_id) DESC) AS rank,
-    u.user_id,
-    u.username,
-    p.first_name || ' ' || p.last_name AS full_name,
-    COALESCE(SUM(a.xp_value), 0) AS total_xp,
-    COUNT(DISTINCT ua.achievement_id) AS badges_unlocked,
-    COUNT(DISTINCT r.review_id) AS total_cards_reviewed
-FROM users u
-INNER JOIN user_profiles p ON u.user_id = p.user_id
-LEFT JOIN user_achievements ua ON u.user_id = ua.user_id
-LEFT JOIN achievements a ON ua.achievement_id = a.achievement_id
-LEFT JOIN study_sessions s ON u.user_id = s.user_id
-LEFT JOIN review_logs r ON s.session_id = r.session_id
-WHERE u.is_active = TRUE
-GROUP BY u.user_id, u.username, p.first_name, p.last_name
+WITH xp_by_user AS (
+    SELECT ua.user_id,
+           SUM(a.xp_value) AS total_xp,
+           COUNT(*) AS badges_unlocked
+    FROM user_achievements ua
+    INNER JOIN achievements a ON a.achievement_id = ua.achievement_id
+    GROUP BY ua.user_id
+), reviews_by_user AS (
+    SELECT s.user_id,
+           COUNT(r.review_id) AS total_cards_reviewed
+    FROM study_sessions s
+    INNER JOIN review_logs r ON r.session_id = s.session_id
+    GROUP BY s.user_id
+), leaderboard AS (
+    SELECT u.user_id,
+           u.username,
+           p.first_name || ' ' || p.last_name AS full_name,
+           COALESCE(x.total_xp, 0) AS total_xp,
+           COALESCE(x.badges_unlocked, 0) AS badges_unlocked,
+           COALESCE(rv.total_cards_reviewed, 0) AS total_cards_reviewed
+    FROM users u
+    INNER JOIN user_profiles p ON p.user_id = u.user_id
+    LEFT JOIN xp_by_user x ON x.user_id = u.user_id
+    LEFT JOIN reviews_by_user rv ON rv.user_id = u.user_id
+    WHERE u.is_active = TRUE
+)
+SELECT DENSE_RANK() OVER (
+           ORDER BY total_xp DESC, total_cards_reviewed DESC
+       ) AS rank,
+       user_id,
+       username,
+       full_name,
+       total_xp,
+       badges_unlocked,
+       total_cards_reviewed
+FROM leaderboard
 ORDER BY rank ASC
 LIMIT 25;
 

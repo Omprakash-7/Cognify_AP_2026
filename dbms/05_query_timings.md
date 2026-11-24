@@ -1,15 +1,17 @@
 # Cognify Database Query Timings & Performance Benchmark (CP4)
 
-**Project:** Cognify — Adaptive Cognitive Training & Spaced-Repetition Platform  
-**Team:** T0004 · Section: D · Academic Year: 2026  
-**Deliverable:** Checkpoint 4 (CP4) — Query Plan Capture & Timing Benchmarks  
-**Environment:** PostgreSQL 18.4 (ARM64 / macOS), 16 BCNF Normalized Tables, 10,000+ benchmark tuples  
+**Project:** Cognify — Adaptive Cognitive Training & Spaced-Repetition Platform
+**Team:** T0004 · Section: D · Academic Year: 2026
+**Deliverable:** Checkpoint 4 (CP4) — Query Plan Capture & Timing Benchmarks
+**Environment:** PostgreSQL 18.4 (ARM64 / macOS), 16 BCNF Normalized Tables, 10,000+ benchmark tuples. R11 was corrected and rechecked separately on a small regression fixture; see the note below.
 
 ---
 
 ## 1. Official Query Timings Table
 
 All timings were recorded using PostgreSQL `EXPLAIN (ANALYZE, BUFFERS)` executed across **3 consecutive runs** on populated tables with fresh query planner statistics (`VACUUM ANALYZE`). All `WRITE` queries were executed inside transactional `BEGIN; ... ROLLBACK;` blocks to ensure identical database state across iterations.
+
+**R11 benchmark note:** R11 was corrected after its original 10,000+ tuple timing. Its replacement row above comes from a small one-user regression fixture that verifies independent XP/review aggregation, so its latency is not directly comparable with the other rows. `plans/R11_pre_fix.txt` preserves the original benchmark; `plans/R11.txt` contains three plans for the corrected query. Re-run R11 on the full benchmark dataset for an apples-to-apples performance result.
 
 | Query | Type | What it does | Run 1 (ms) | Run 2 (ms) | Run 3 (ms) | Average (ms) | Scan type |
 |:---|:---:|:---|---:|---:|---:|---:|:---|
@@ -23,7 +25,7 @@ All timings were recorded using PostgreSQL `EXPLAIN (ANALYZE, BUFFERS)` executed
 | R8 | READ | Fetch flashcard details with all attached multimedia assets | 0.054 | 0.043 | 0.050 | 0.049 | Index Scan, Seq Scan |
 | R9 | READ | Chronological card review telemetry history and latency trend for a learner | 0.069 | 0.070 | 0.069 | 0.069 | Index Scan, Bitmap Index/Heap Scan, Seq Scan |
 | R10 | READ | Comprehensive study session performance report with duration, accuracy rate, and average latency | 0.130 | 0.124 | 0.124 | 0.126 | Index Scan, Bitmap Index/Heap Scan, Seq Scan |
-| R11 | READ | Global student leaderboard ranked by total earned XP and completed reviews | 2.195 | 2.004 | 2.289 | 2.163 | Seq Scan |
+| R11 | READ | Global student leaderboard ranked by total earned XP and completed reviews (small correctness fixture) | 0.314 | 0.424 | 0.377 | 0.372 | Seq Scan, HashAggregate |
 | R12 | READ | Fetch user unlocked achievements, tiers, XP values, and unlock timestamps | 0.044 | 0.041 | 0.088 | 0.058 | Seq Scan |
 | R13 | READ | Fetch locked achievements available for a learner to earn | 0.042 | 0.043 | 0.044 | 0.043 | Seq Scan |
 | R14 | READ | Deck creator analytics measuring learner engagement, total reviews, and average rating | 0.816 | 0.822 | 0.839 | 0.826 | Seq Scan |
