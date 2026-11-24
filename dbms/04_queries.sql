@@ -412,7 +412,8 @@ VALUES (
     'STANDARD',
     4,
     CURRENT_TIMESTAMP
-);
+)
+ON CONFLICT (card_id) DO NOTHING;
 
 -- W8 -- WRITE: Attach media asset to flashcard
 INSERT INTO card_media (media_id, card_id, media_url, media_type, file_size_bytes, uploaded_at)
