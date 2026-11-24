@@ -323,7 +323,7 @@ LIMIT 50;
 -- PART 2: WRITE WORKLOADS (W1 – W15)
 -- ============================================================================
 
--- W1 -- WRITE: Register a new user account
+-- W1 -- WRITE: Register a new user account without raising on any unique-key duplicate
 INSERT INTO users (user_id, username, email, is_active, created_at)
 VALUES (
     '00000000-0000-0000-0000-000000000003'::uuid, 
@@ -332,7 +332,7 @@ VALUES (
     TRUE, 
     CURRENT_TIMESTAMP
 )
-ON CONFLICT (username) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- W2 -- WRITE: Store secure password hash and salt for user credentials
 INSERT INTO user_credentials (user_id, password_hash, salt, mfa_secret, password_last_changed)
