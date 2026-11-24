@@ -437,7 +437,8 @@ VALUES (
     NULL,
     'NORMAL',
     'macOS Chrome 130.0'
-);
+)
+ON CONFLICT (session_id) DO NOTHING;
 
 -- W10 -- WRITE: Log single card review event telemetry
 INSERT INTO review_logs (review_id, session_id, card_id, rating, reaction_time_ms, is_correct, review_timestamp)
