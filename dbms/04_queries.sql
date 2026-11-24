@@ -517,14 +517,15 @@ SET timezone = 'Asia/Kolkata',
     updated_at = CURRENT_TIMESTAMP
 WHERE user_id = '00000000-0000-0000-0000-000000000002'::uuid;
 
--- W15 -- WRITE: Record security audit event log for sensitive operations
+-- W15 -- WRITE: Record one idempotent security audit event using a stable event ID
 INSERT INTO audit_logs (log_id, user_id, action_type, target_entity, ip_address, user_agent, created_at)
 VALUES (
-    gen_random_uuid(),
+    '00000000-0000-0000-0000-000000006001'::uuid,
     '00000000-0000-0000-0000-000000000002'::uuid,
     'AUTH_PASSWORD_CHANGE',
     'user_credentials',
     '192.168.1.105'::inet,
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)',
     CURRENT_TIMESTAMP
-);
+)
+ON CONFLICT (log_id) DO NOTHING;

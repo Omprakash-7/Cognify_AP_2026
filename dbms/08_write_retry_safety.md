@@ -18,7 +18,7 @@ statement still needs the application to check its affected-row count.
 | W12 | Updates only while `session_end IS NULL` | Repeating a successful close is a no-op. |
 | W13 | `DO NOTHING` for an existing user/achievement pair | Safe to retry. |
 | W14 | Set profile values | State is repeatable; `updated_at` changes on each retry. |
-| W15 | Append an audit event with a generated ID | Do not retry blindly without an event/idempotency key, or duplicate audit events may be recorded. |
+| W15 | `DO NOTHING` for an existing `log_id` | The application must reuse the same event ID on retry; generating a new ID per attempt would still create duplicates. |
 
 The benchmark wraps writes in `BEGIN`/`ROLLBACK`; that guarantees repeatable
 timing runs, but it does not by itself guarantee safe application retries.
