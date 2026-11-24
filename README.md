@@ -13,6 +13,8 @@ spaced-repetition app. For a short class walkthrough:
 4. Discuss the leaderboard fan-out fix in [`dbms/06_query_review.md`](dbms/06_query_review.md):
    separate aggregates prevent achievements and reviews from multiplying each
    other's totals.
+5. For the write-path discussion, compare W10's retry-safe review insert with
+   W11's scheduling-state upsert in [`dbms/14_individual_analysis_sm2_upsert.md`](dbms/14_individual_analysis_sm2_upsert.md).
 
 The notes distinguish query correctness from performance measurements; in
 particular, the corrected R11 plan uses a small regression fixture and should
