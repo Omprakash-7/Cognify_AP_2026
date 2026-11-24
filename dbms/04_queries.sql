@@ -450,7 +450,8 @@ VALUES (
     1420,
     TRUE,
     CURRENT_TIMESTAMP
-);
+)
+ON CONFLICT (review_id) DO NOTHING;
 
 -- W11 -- WRITE: Upsert spaced repetition state (SM-2 Algorithm mutation)
 INSERT INTO card_progress (

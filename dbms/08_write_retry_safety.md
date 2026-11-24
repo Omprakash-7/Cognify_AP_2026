@@ -13,8 +13,8 @@ statement still needs the application to check its affected-row count.
 | W7 | `DO NOTHING` for an existing `card_id` | Retry with the same card ID; check the affected-row count before reporting creation. |
 | W8 | `DO NOTHING` for an existing `media_id` | Retry with the same media ID; check the affected-row count before reporting attachment. |
 | W9 | `DO NOTHING` for an existing `session_id` | Retry with the same session ID; check the affected-row count before reporting a new session. |
-| W10 | Plain insert with a fixed primary key | Not retry-safe yet; use a stable request/event ID and handle duplicate-key responses. |
-| W11 | Upsert by `(user_id, card_id)` | Safe against duplicate state rows, but do not apply the learning event twice; deduplicate the review event first. |
+| W10 | `DO NOTHING` for an existing `review_id` | Retry with the same review ID. Apply W11 only when the review insert is new, so a retried event does not advance progress twice. |
+| W11 | Upsert by `(user_id, card_id)` | Safe against duplicate state rows, but progress changes are not event-idempotent by themselves; gate the update on a newly inserted W10 event. |
 | W12 | Updates only while `session_end IS NULL` | Repeating a successful close is a no-op. |
 | W13 | `DO NOTHING` for an existing user/achievement pair | Safe to retry. |
 | W14 | Set profile values | State is repeatable; `updated_at` changes on each retry. |
