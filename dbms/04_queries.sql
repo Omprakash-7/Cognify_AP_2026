@@ -424,7 +424,8 @@ VALUES (
     'LATEX_SVG',
     45120,
     CURRENT_TIMESTAMP
-);
+)
+ON CONFLICT (media_id) DO NOTHING;
 
 -- W9 -- WRITE: Initialize and start a new study session
 INSERT INTO study_sessions (session_id, user_id, deck_id, session_start, session_end, session_mode, device_info)

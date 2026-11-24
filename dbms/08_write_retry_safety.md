@@ -11,7 +11,8 @@ statement still needs the application to check its affected-row count.
 | W5 | `DO NOTHING` for an existing user/role pair | Safe to retry. |
 | W6 | Upsert by `(owner_user_id, deck_slug)` | Reuse the same owner and slug; a primary-key collision on a different slug still fails. |
 | W7 | `DO NOTHING` for an existing `card_id` | Retry with the same card ID; check the affected-row count before reporting creation. |
-| W8–W10 | Plain inserts with fixed primary keys | Not retry-safe yet; use a stable request/event ID and handle duplicate-key responses. |
+| W8 | `DO NOTHING` for an existing `media_id` | Retry with the same media ID; check the affected-row count before reporting attachment. |
+| W9–W10 | Plain inserts with fixed primary keys | Not retry-safe yet; use a stable request/event ID and handle duplicate-key responses. |
 | W11 | Upsert by `(user_id, card_id)` | Safe against duplicate state rows, but do not apply the learning event twice; deduplicate the review event first. |
 | W12 | Updates only while `session_end IS NULL` | Repeating a successful close is a no-op. |
 | W13 | `DO NOTHING` for an existing user/achievement pair | Safe to retry. |
